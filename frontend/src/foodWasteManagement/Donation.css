@@ -1,0 +1,278 @@
+/* Main container styles */
+.donation-section {
+    margin: 30px 0;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  
+  .donation-section h3 {
+    color: #423bc3;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  /* Cards container */
+  .donation-centers-container {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+  
+  /* Individual card styling */
+  .donation-center-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    min-width: 300px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e1e4e8;
+  }
+  
+  .donation-center-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Image container */
+  .center-image-container {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  
+  .center-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .donation-center-card:hover .center-image {
+    transform: scale(1.03);
+  }
+  
+  /* Center info section */
+  .center-info {
+    margin-bottom: 15px;
+  }
+  
+  .center-info h4 {
+    color: #7c3ad3;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .center-info p {
+    margin-bottom: 10px;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  
+  .center-address {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .phone-number {
+    font-weight: bold;
+    margin: 8px 0 12px 0;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  /* Accepts items section */
+  .accepts-section {
+    margin: 15px 0;
+    flex-grow: 1;
+  }
+  
+  .accepts-section strong {
+    color: #333;
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .accepts-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .accepts-items li {
+    background-color: #e8ecf5;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    color: #5452d6;
+    white-space: nowrap;
+  }
+  
+  /* Button styling */
+  .visit-website {
+    background-color: #406fd6;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: auto;
+    font-size: 0.95rem;
+    transition: background-color 0.3s;
+    width: 100%;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .visit-website:hover {
+    background-color: #445fd6;
+  }
+  
+  .visit-website::after {
+    font-size: 1rem;
+  }
+  
+  /* Additional Styles You Want to Add */
+  .donation-section .section-divider {
+    border: 0;
+    height: 1px;
+    background-color: #e1e4e8;
+    margin: 30px 0;
+  }
+  
+  .donation-section .why-donate-content {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .donation-section .why-donate-text {
+    flex: 1;
+  }
+  
+  .donation-section .why-donate-image {
+    flex: 1;
+  }
+  
+  .donation-section .why-donate-image img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .donation-section .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .donation-section .tip-item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .donation-section .tip-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #4578cb;
+  }
+
+  .donation-footer{
+    background-color: white;
+    text-align: center;
+    color: black;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .donation-center-card {
+      min-width: 280px;
+    }
+    
+    .donation-centers-container {
+      gap: 20px;
+    }
+  
+    .donation-section .why-donate-content {
+      flex-direction: column;
+    }
+  
+    .donation-section .tips-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .donation-section {
+      padding: 0 15px;
+    }
+    
+    .donation-center-card {
+      min-width: 100%;
+      max-width: 400px;
+    }
+    
+    .center-image-container {
+      height: 200px;
+    }
+    
+    .donation-centers-container {
+      gap: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .donation-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    
+    .center-image-container {
+      height: 180px;
+    }
+    
+    .center-info h4 {
+      font-size: 1.1rem;
+    }
+    
+    .accepts-items {
+      gap: 6px;
+    }
+    
+    .accepts-items li {
+      font-size: 0.8rem;
+      padding: 5px 10px;
+    }
+    
+    .visit-website {
+      padding: 10px 15px;
+      font-size: 0.9rem;
+    }
+  
+    .donation-section .why-donate-image {
+      order: -1;
+    }
+  }
