@@ -1,0 +1,185 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0c2a2c 0%, #034343 100%);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+  }
+  
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .login-card {
+    width: 420px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .login-card:hover {
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+  }
+  
+  .login-header {
+    background: #4361ee;
+    color: white;
+    padding: 24px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .login-title {
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+  
+  .login-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+  }
+  
+  .login-body {
+    padding: 32px;
+    background: white;
+  }
+  
+  .login-form .ant-input-affix-wrapper {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s;
+  }
+  
+  .login-form .ant-input-affix-wrapper:hover {
+    border-color: #764ba2;
+  }
+  
+  .login-form .ant-input-prefix {
+    color: rgba(0, 0, 0, 0.3);
+    margin-right: 10px;
+  }
+  
+  .login-form .ant-input {
+    font-size: 15px;
+  }
+  
+  .login-form-button {
+    width: 100%;
+    height: 44px;
+    border-radius: 8px;
+    font-weight: 500;
+    background: #4361ee;
+    border: none;
+    transition: all 0.3s;
+  }
+  
+  .login-form-button:hover {
+    background: #294be1;
+    transform: translateY(-2px);
+  }
+  
+  .login-form-forgot {
+    color: #764ba2;
+    float: right;
+  }
+  
+  .login-form-forgot:hover {
+    color: #5a6fd1;
+  }
+  
+  .login-divider {
+    color: #8c8c8c;
+    margin: 24px 0;
+  }
+  
+  .social-login-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+  
+  .social-login-btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  .social-login-btn .anticon {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+  
+  .google-btn {
+    background: #fff;
+    color: #db4437;
+    border: 1px solid #db4437;
+  }
+  
+  .google-btn:hover {
+    background: #f5f5f5;
+  }
+  
+  .facebook-btn {
+    background: #fff;
+    color: #4267b2;
+    border: 1px solid #4267b2;
+  }
+  
+  .facebook-btn:hover {
+    background: #f5f5f5;
+  }
+  
+  .github-btn {
+    background: #fff;
+    color: #333;
+    border: 1px solid #333;
+  }
+  
+  .github-btn:hover {
+    background: #f5f5f5;
+  }
+  
+  .login-footer {
+    text-align: center;
+    margin-top: 24px;
+    color: #8c8c8c;
+  }
+  
+  .login-footer a {
+    color: #764ba2;
+    font-weight: 500;
+  }
+  
+  .login-footer a:hover {
+    color: #5a6fd1;
+  }
+  
+  /* Animation for form elements */
+  .login-form-item {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .login-form-item:nth-child(1) { animation-delay: 0.1s; }
+  .login-form-item:nth-child(2) { animation-delay: 0.2s; }
+  .login-form-item:nth-child(3) { animation-delay: 0.3s; }
+  .login-form-item:nth-child(4) { animation-delay: 0.4s; }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
