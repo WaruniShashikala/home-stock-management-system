@@ -6,6 +6,7 @@ import LandingPage from './pages/landingPage/langingPage';
 import Login from './pages/login/login';
 import Signup from './pages/signup';
 import WasteMenu from './foodWasteManagement/WasteMenu';
+import ListMenu from './listManagement/listMenu';
 
 
 // Protected Route wrapper
@@ -56,6 +57,14 @@ function App() {
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <WasteMenu onLogout={handleLogout} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-management/*"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <ListMenu onLogout={handleLogout} />
               </ProtectedRoute>
             }
           />
