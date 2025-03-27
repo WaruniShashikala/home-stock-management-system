@@ -200,10 +200,10 @@ const FoodList = () => {
                     >
                         <Radio.Group>
                             <Space direction="vertical">
+                                <Radio value="count">Count</Radio>
                                 <Radio value="kg">Kilogram (kg)</Radio>
                                 <Radio value="liter">Liter (l)</Radio>
                                 <Radio value="packs">Packs</Radio>
-                                <Radio value="count">Count</Radio>
                             </Space>
                         </Radio.Group>
                     </Form.Item>
