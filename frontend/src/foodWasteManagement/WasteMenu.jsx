@@ -13,7 +13,8 @@ import {
   HeartOutlined,
   BarChartOutlined,
   AppstoreOutlined,
-  PlusCircleOutlined
+  PlusCircleOutlined,
+  AppstoreAddOutlined
 } from '@ant-design/icons';
 import { Button, Menu, Layout, Dropdown, Avatar, Badge, Space, Card, Table, Statistic } from 'antd';
 const { Header, Sider, Content } = Layout;
@@ -57,10 +58,11 @@ const DashboardView = () => (
 
 
 const menuItems = [
-  { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
-  { key: '2', icon: <PlusCircleOutlined/>, label: 'Log Waste', component: wasteList },
-  { key: '3', icon: <BarChartOutlined/>, label: 'Reports', component: report },
-  { key: '4', icon: <HeartOutlined/>, label: 'Donations', component:  Donation},
+  // { key: '1', icon: <AppstoreAddOutlined />, label: 'Main Dashboard', component: Dashboard },
+  { key: '2', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
+  { key: '3', icon: <PlusCircleOutlined/>, label: 'Log Waste', component: wasteList },
+  { key: '4', icon: <BarChartOutlined/>, label: 'Reports', component: report },
+  { key: '5', icon: <HeartOutlined/>, label: 'Donations', component:  Donation},
 ];
 
 const userMenuItems = [
@@ -168,7 +170,7 @@ const WasteMenu = () => {
           backgroundColor: '#fff',
           marginLeft: '28px'
         }}>
-          {collapsed ? 'WN' : 'WasteNot'}
+          {collapsed ? 'WL' : 'Waste Log'}
         </div>
         <Menu
           selectedKeys={selectedKeys}
