@@ -12,7 +12,8 @@ const WasteList = () => {
   const [searchText, setSearchText] = useState('');
   const [editingItem, setEditingItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5); // Default items per page
+  const [pageSize, setPageSize] = useState(5); 
+  const [isView, setIsView] = useState(false);
 
   const { data: wastes, error, isLoading, refetch } = useGetAllWasteQuery();
   const [deleteWaste] = useDeleteWasteMutation();
@@ -46,6 +47,12 @@ const WasteList = () => {
     setIsPopupVisible(true);
   };
 
+  const handleViewClick = (item) => {
+    setEditingItem(item);
+    setIsPopupVisible(true);
+    setIsView(true);
+  };
+
   const handleDelete = async (id) => {
     try {
       await deleteWaste(id).unwrap();
@@ -70,7 +77,7 @@ const WasteList = () => {
 
   const actionMenu = (item) => (
     <Menu>
-      <Menu.Item key="view" icon={<EyeOutlined />}>View Details</Menu.Item>
+      <Menu.Item key="view" icon={<EyeOutlined />} onClick={() => handleViewClick(item)}>View Details</Menu.Item>
       <Menu.Item key="edit" icon={<EditOutlined />} onClick={() => handleEditClick(item)}>
         Edit
       </Menu.Item>
@@ -100,7 +107,7 @@ const WasteList = () => {
   if (error) return <Text type="danger">Error loading waste records</Text>;
 
   return (
-    <div style={{ padding: '24px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+    <div style={{ padding: '24px' }}>
       <Space direction="vertical" style={{ width: '100%' }} size="large">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Title level={3}>Waste Records</Title>
@@ -208,9 +215,11 @@ const WasteList = () => {
         onCancel={() => {
           setIsPopupVisible(false);
           setEditingItem(null);
+          setIsView(false);
         }}
         onSave={editingItem ? handleEditWaste : handleAddWaste}
         initialValues={editingItem}
+        isView={isView}
       />
     </div>
   );

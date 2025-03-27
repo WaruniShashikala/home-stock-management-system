@@ -21,7 +21,7 @@ import axios from 'axios';
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
+const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => {
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
     const [date, setDate] = useState(null);
@@ -36,13 +36,26 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                 date: initialValues.date ? moment(initialValues.date) : null
             };
             form.setFieldsValue(formattedValues);
-            setDate(formattedValues.date); 
+            setDate(formattedValues.date);
+
+            if (initialValues.imageUrl) {
+                setFileList([
+                    {
+                        uid: '-1',
+                        name: 'Uploaded Image',
+                        url: initialValues.imageUrl
+                    }
+                ]);
+            } else {
+                setFileList([]);
+            }
         } else {
             form.resetFields();
             setFileList([]);
             setDate(null);
         }
     }, [initialValues, visible, form]);
+
 
     const handleUploadChange = async ({ fileList: newFileList }) => {
         if (newFileList.length > 0) {
@@ -52,20 +65,20 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
             // Cloudinary Direct Upload
             const formData = new FormData();
             formData.append('file', file);
-            formData.append('upload_preset', 'ml_default'); 
+            formData.append('upload_preset', 'ml_default');
 
             try {
                 const response = await axios.post(
-                    'https://api.cloudinary.com/v1_1/dox9et7mt/image/upload', 
+                    'https://api.cloudinary.com/v1_1/dox9et7mt/image/upload',
                     formData
                 );
-                const imageUrl = response.data.secure_url; 
+                const imageUrl = response.data.secure_url;
 
                 setFileList([{ ...newFileList[0], url: imageUrl }]);
                 message.success('Image uploaded successfully!');
             } catch (error) {
                 message.error('Image upload failed!');
-                setFileList([]);
+                setFileList();
             } finally {
                 setUploading(false); // Stop loading regardless of success/failure
             }
@@ -75,7 +88,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
     };
 
     const handleDateChange = (value) => {
-        const momentDate = value ? moment(value) : null; 
+        const momentDate = value ? moment(value) : null;
         setDate(momentDate);
         form.setFieldsValue({ date: momentDate });
     };
@@ -84,7 +97,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
         try {
             const values = await form.validateFields();
             const formData = new FormData();
-            
+
             // Append all form values to FormData
             Object.entries(values).forEach(([key, value]) => {
                 if (value !== undefined && value !== null) {
@@ -155,7 +168,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                     key="submit"
                     type="primary"
                     onClick={handleSubmit}
-                    disabled={uploading} // Disable save button while uploading
+                    disabled={uploading || isView}
                 >
                     {initialValues ? 'Update' : 'Save'} Waste Record
                 </Button>,
@@ -172,7 +185,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                     name="itemName"
                     rules={[{ required: true, message: 'Please input the food item!' }]}
                 >
-                    <Input placeholder="What food item was wasted?" size="large" />
+                    <Input readOnly={isView} placeholder="What food item was wasted?" size="large" />
                 </Form.Item>
                 <Row gutter={12}>
                     <Col span={12}>
@@ -183,7 +196,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                         >
                             <Select placeholder="Select a category" size="large">
                                 {categoryOptions.map(category => (
-                                    <Option key={category} value={category}>{category}</Option>
+                                    <Option disabled={isView} key={category} value={category}>{category}</Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -194,7 +207,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                             name="quantity"
                             rules={[{ required: true, message: 'Please input the quantity!' }]}
                         >
-                            <Input placeholder="e.g., 2 cups, 1 loaf, 3 items" size="large" />
+                            <Input readOnly={isView} placeholder="e.g., 2 cups, 1 loaf, 3 items" size="large" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -205,7 +218,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                 >
                     <Select placeholder="Select a reason" size="large">
                         {reasonOptions.map(reason => (
-                            <Option key={reason} value={reason}>{reason}</Option>
+                            <Option disabled={isView} key={reason} value={reason}>{reason}</Option>
                         ))}
                     </Select>
                 </Form.Item>
@@ -216,6 +229,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                     rules={[{ required: true, message: 'Please select a valid date!' }]}
                 >
                     <DatePicker
+                        disabled={isView}
                         style={{ width: '100%' }}
                         size="large"
                         format="MM/DD/YYYY"
@@ -231,7 +245,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues }) => {
                             beforeUpload={() => false}
                             maxCount={1}
                             listType="picture-card"
-                            disabled={uploading} // Disable upload while uploading
+                            disabled={uploading || isView} // Disable upload while uploading
                         >
                             {fileList.length >= 1 ? null : (
                                 <div>
