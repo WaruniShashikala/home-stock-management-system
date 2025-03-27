@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Input, Card, List, Button, Typography, Tag, Space, Divider, Popconfirm, message, Dropdown, Menu, Spin, Image, Pagination } from 'antd';
-import { PlusOutlined, SearchOutlined, EyeOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
-import AddWastePopup from './addWastePopup';
+import { Input, Card, List, Button, Typography, Tag, Space, Popconfirm, message, Dropdown, Menu, Spin, Image, Pagination } from 'antd';
+import { EyeOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { useGetAllWasteQuery, useDeleteWasteMutation } from '../services/wasteManagementApi';
 
 const { Search } = Input;

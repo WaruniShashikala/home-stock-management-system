@@ -103,7 +103,7 @@ const Dashboard = () => {
     labels: ['2023-06', '2023-09', '2023-12', '2024-03', '2024-06', '2024-09', '2024-12', '2025-03'],
     datasets: [
       {
-        label: 'Waste (kg)',
+        label: 'Count',
         data: [1.2, 1.5, 1.3, 1.7, 1.5, 1.8, 1.6, 2.0],
         backgroundColor: '#8EC3FF',
         borderColor: '#6DA8FF',
