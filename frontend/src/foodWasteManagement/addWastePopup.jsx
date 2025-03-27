@@ -156,22 +156,24 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
 
     return (
         <Modal
-            title={<Title level={4}>{initialValues ? 'Edit Waste Record' : 'Log Wasted Item'}</Title>}
+            title={<Title level={4}>{isView ? 'View Waste Record' : initialValues ? 'Edit Waste Record' : 'Add Wasted Item'}</Title>}
             visible={visible}
             onCancel={onCancel}
             footer={[
                 <Button key="back" onClick={onCancel}>
                     Cancel
                 </Button>,
-                <Button
-                    style={{ backgroundColor: '#825af2', borderColor: '#825af2' }}
-                    key="submit"
-                    type="primary"
-                    onClick={handleSubmit}
-                    disabled={uploading || isView}
-                >
-                    {initialValues ? 'Update' : 'Save'} Waste Record
-                </Button>,
+                !isView && (
+                    <Button
+                        style={{ backgroundColor: '#825af2', borderColor: '#825af2' }}
+                        key="submit"
+                        type="primary"
+                        onClick={handleSubmit}
+                        disabled={uploading}
+                    >
+                        {initialValues ? 'Update' : 'Save'} Waste Record
+                    </Button>
+                ),
             ]}
             width={600}
             destroyOnClose
