@@ -23,5 +23,6 @@ dbConnect();
 
 //routes
 app.use("/api/waste", require("./routes/wasteRoutes"));
+app.use("/api/food", require("./routes/foodList"));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

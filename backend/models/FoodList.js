@@ -1,0 +1,34 @@
+const mongoose = require('mongoose');
+
+const foodSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    usageQuantity: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    restockQuantity: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    unit: {
+        type: String,
+        required: true,
+        enum: ['kg', 'liter', 'packs', 'count'],
+        default: 'count'
+    }
+}, {
+    timestamps: true
+});
+
+module.exports = mongoose.model('Food', foodSchema);
