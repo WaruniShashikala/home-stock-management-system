@@ -39,22 +39,13 @@ const FoodList = () => {
         setIsPopupVisible(true);
     };
 
-    const handleDelete = (record) => {
-        Modal.confirm({
-            title: `Are you sure you want to delete ${record.name}?`,
-            content: 'This action cannot be undone.',
-            okText: 'Yes, Delete',
-            okType: 'danger',
-            cancelText: 'Cancel',
-            onOk: async () => {
-                try {
-                    await deleteFood(record._id).unwrap();
-                    message.success(`${record.name} deleted successfully!`);
-                } catch (err) {
-                    message.error(`Failed to delete ${record.name}: ${err.message}`);
-                }
-            }
-        });
+    const handleDelete = async (record) => {
+        try {
+            await deleteFood(record._id).unwrap();
+            message.success(`${record.name} deleted successfully!`);
+        } catch (err) {
+            message.error(`Failed to delete ${record.name}: ${err.message}`);
+        }
     };
 
     const handleAddNew = () => {
