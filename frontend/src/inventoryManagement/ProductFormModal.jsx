@@ -42,7 +42,7 @@ const ProductFormModal = ({
 
             try {
                 const response = await axios.post(
-                    'https://api.cloudinary.com/v1_1/dox9et7mt/image/upload',
+                    'https://api.cloudinary.com/v1_1/dwqizp90f/image/upload',
                     formData
                 );
                 const imageUrl = response.data.secure_url;
