@@ -28,7 +28,7 @@ const LandingPage = () => {
                     <h1>Smart <span>Home Inventory</span> Management Made Easy</h1>
                     <p>Track, organize, and manage everything in your home with our intuitive stock management system. Never run out of essentials or lose track of your belongings again.</p>
                     <div class="hero-btns">
-                        <Link to="/login" class="btn btn-primary">Start Free Trial</Link>
+                        <Link to="/login" class="btn btn-primary">Get Start</Link>
                         <Link to="#" class="btn btn-outline">Learn More</Link>
                     </div>
                 </div>

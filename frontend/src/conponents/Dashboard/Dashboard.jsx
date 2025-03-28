@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WasteMenu from '../../foodWasteManagement/WasteMenu';
 import ListMenu from '../../listManagement/listMenu';
+import InventryMenu from '../../inventoryManagement/inventoryMenu';
+
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -110,7 +112,7 @@ const DashboardView = ({ navigate }) => {
     {
       title: 'Budget',
       icon: <DollarOutlined />,
-      path: '/budget',
+      path: '/budget-management',
       description: 'Track your expenses',
       color: '#eb2f96'
     },
@@ -246,16 +248,16 @@ const menuItems = [
     key: '4', 
     icon: <ShoppingOutlined />, 
     label: 'Inventory Management', 
-    component: ListMenu,
+    component: InventryMenu,
     path: '/inventory-management'
   },
-  { 
-    key: '5', 
-    icon: <TeamOutlined />, 
-    label: 'User Management', 
-    component: WasteMenu,
-    path: '/user-management'
-  },
+  // { 
+  //   key: '5', 
+  //   icon: <TeamOutlined />, 
+  //   label: 'User Management', 
+  //   component: WasteMenu,
+  //   path: '/user-management'
+  // },
   // { 
   //   key: '6', 
   //   icon: <ShoppingCartOutlined />, 
@@ -270,13 +272,13 @@ const menuItems = [
   //   component: ListMenu,
   //   path: '/categories'
   // },
-  // { 
-  //   key: '8', 
-  //   icon: <DollarOutlined />, 
-  //   label: 'Budget', 
-  //   component: WasteMenu,
-  //   path: '/budget'
-  // },
+  { 
+    key: '8', 
+    icon: <DollarOutlined />, 
+    label: 'Budget', 
+    component: WasteMenu,
+    path: '/budget-management'
+  },
   // { 
   //   key: '9', 
   //   icon: <BarChartOutlined/>, 
@@ -389,7 +391,7 @@ const MainDashboard = () => {
           backgroundColor: '#fff',
           borderBottom: '1px solid rgba(0,0,0,0.06)'
         }}>
-          {collapsed ? 'DB' : 'Dashboard Pro'}
+          {collapsed ? 'MD' : 'Main Dashboard'}
         </div>
         <Menu
           selectedKeys={selectedKeys}

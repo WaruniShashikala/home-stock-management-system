@@ -3,6 +3,7 @@ import { Input, Card, List, Button, Typography, Tag, Space, Divider, Popconfirm,
 import { PlusOutlined, SearchOutlined, EyeOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import AddWastePopup from './addWastePopup';
 import { useGetAllWasteQuery, useDeleteWasteMutation } from '../services/wasteManagementApi';
+import { ToastContainer, toast } from 'react-toastify';
 
 const { Search } = Input;
 const { Title, Text } = Typography;
@@ -12,7 +13,7 @@ const WasteList = () => {
   const [searchText, setSearchText] = useState('');
   const [editingItem, setEditingItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5); 
+  const [pageSize, setPageSize] = useState(5);
   const [isView, setIsView] = useState(false);
 
   const { data: wastes, error, isLoading, refetch } = useGetAllWasteQuery();
@@ -57,9 +58,27 @@ const WasteList = () => {
     try {
       await deleteWaste(id).unwrap();
       refetch();
-      message.success('Waste record deleted successfully!');
+      toast.success('Record Delete Success!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+      });
     } catch (err) {
-      message.error('Failed to delete waste record');
+      toast.error('Record Delete Error!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+      });
     }
   };
 
@@ -75,25 +94,6 @@ const WasteList = () => {
     'Other': 'gray'
   };
 
-  const actionMenu = (item) => (
-    <Menu>
-      <Menu.Item key="view" icon={<EyeOutlined />} onClick={() => handleViewClick(item)}>View Details</Menu.Item>
-      <Menu.Item key="edit" icon={<EditOutlined />} onClick={() => handleEditClick(item)}>
-        Edit
-      </Menu.Item>
-      <Menu.Item key="delete" danger icon={<DeleteOutlined />}>
-        <Popconfirm
-          title="Are you sure to delete this record?"
-          onConfirm={() => handleDelete(item._id)}
-          okText="Yes"
-          cancelText="No"
-        >
-          Delete
-        </Popconfirm>
-      </Menu.Item>
-    </Menu>
-  );
-
   if (isLoading) return (
     <div style={{
       display: 'flex',
@@ -105,6 +105,46 @@ const WasteList = () => {
     </div>
   );
   if (error) return <Text type="danger">Error loading waste records</Text>;
+
+  const iconButtonStyle = {
+    width: '32px',
+    height: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '8px',
+    transition: 'all 0.3s ease',
+    color: '#555',
+  };
+
+  const hoverStyle = {
+    backgroundColor: '#f0f0f0',
+    color: '#333',
+    transform: 'scale(1.1)',
+  };
+
+  const viewButtonStyle = {
+    ...iconButtonStyle,
+    ':hover': hoverStyle,
+  };
+
+  const editButtonStyle = {
+    ...iconButtonStyle,
+    ':hover': {
+      ...hoverStyle,
+      color: '#1890ff',
+      backgroundColor: '#e6f7ff',
+    },
+  };
+
+  const deleteButtonStyle = {
+    ...iconButtonStyle,
+    ':hover': {
+      ...hoverStyle,
+      color: '#ff4d4f',
+      backgroundColor: '#fff1f0',
+    },
+  };
 
   return (
     <div style={{ padding: '24px' }}>
@@ -132,8 +172,8 @@ const WasteList = () => {
 
         <Divider />
 
-        <div style={{ 
-          maxHeight: 'calc(100vh - 300px)', 
+        <div style={{
+          maxHeight: 'calc(100vh - 300px)',
           overflowY: 'auto',
           paddingRight: '8px'
         }}>
@@ -168,30 +208,53 @@ const WasteList = () => {
                         preview={{ mask: <EyeOutlined />, maskClassName: 'custom-image-mask' }}
                       />
                     ) : (
-                      <Text style={{ padding: '10px', textAlign: 'center', alignItems:'center', display:'flex' }} type="secondary">No image</Text>
+                      <Text style={{ padding: '10px', textAlign: 'center', alignItems: 'center', display: 'flex' }} type="secondary">No image</Text>
                     )}
                   </div>
                   <div style={{ flex: 1, marginLeft: '16px' }}>
                     <Title level={5}>{item.itemName}</Title>
-                    <Text>{item.quantity} <Tag color={reasonColors[item.reason] || 'default'}>{item.reason}</Tag></Text><br/>
+                    <Text>{item.quantity} <Tag color={reasonColors[item.reason] || 'default'}>{item.reason}</Tag></Text><br />
                     <Text type="secondary">{new Date(item.date).toLocaleDateString()}</Text>
                   </div>
-                  <Dropdown overlay={actionMenu(item)} trigger={['click']}>
+                  <Space size="middle" style={{ marginLeft: '16px' }}>
                     <Button
                       type="text"
-                      icon={<MoreOutlined />}
-                      style={{ marginLeft: '16px' }}
+                      icon={<EyeOutlined />}
+                      onClick={() => handleViewClick(item)}
+                      title="View Details"
+                      style={{border: '1px solid black'}}
                     />
-                  </Dropdown>
+                    <Button
+                      type="text"
+                      icon={<EditOutlined />}
+                      onClick={() => handleEditClick(item)}
+                      title="Edit"
+                      style={{border: '1px solid blue'}}
+                    />
+                    <Popconfirm
+                      title="Are you sure to delete this record?"
+                      onConfirm={() => handleDelete(item._id)}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button
+                        type="text"
+                        icon={<DeleteOutlined />}
+                        danger
+                        title="Delete"
+                        style={{border: '1px solid red'}}
+                      />
+                    </Popconfirm>
+                  </Space>
                 </div>
               </Card>
             )}
           />
         </div>
 
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
           marginTop: '16px',
           padding: '16px 0',
           borderTop: '1px solid #f0f0f0'

@@ -154,15 +154,7 @@ const Dashboard = () => {
   return (
     <div style={{ padding: '24px' }} ref={dashboardRef}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <AntTitle level={2}>Waste Reports</AntTitle>
-        <Button 
-          style={{backgroundColor:'#825af2'}}
-          type="primary" 
-          icon={<DownloadOutlined />} 
-          onClick={handleDownloadPDF}
-        >
-          Download as PDF
-        </Button>
+        <AntTitle level={2}>Waste Summery</AntTitle>
       </div>
       
       <Divider />
