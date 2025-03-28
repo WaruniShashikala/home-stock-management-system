@@ -167,7 +167,7 @@ const BudgetMenu = () => {
           backgroundColor: '#fff',
           marginLeft: '28px'
         }}>
-          {collapsed ? 'IV' : 'Inventory'}
+          {collapsed ? 'BG' : 'Budget'}
         </div>
         <Menu
           selectedKeys={selectedKeys}
