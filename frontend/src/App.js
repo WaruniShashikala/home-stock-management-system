@@ -7,6 +7,9 @@ import Login from './pages/login/login';
 import Signup from './pages/signup';
 import WasteMenu from './foodWasteManagement/WasteMenu';
 import ListMenu from './listManagement/listMenu';
+import { ToastContainer } from 'react-toastify';
+import InventryMenu from './inventoryManagement/inventoryMenu';
+import BudgetMenu from './budgetManagement/budgetMenu';
 
 
 // Protected Route wrapper
@@ -34,12 +37,13 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <ToastContainer />
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
-          <Route 
-            path="/login" 
-            element={<Login onLogin={handleLogin} />} 
+          <Route
+            path="/login"
+            element={<Login onLogin={handleLogin} />}
           />
           <Route path="/signup" element={<Signup />} />
 
@@ -65,6 +69,24 @@ function App() {
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <ListMenu onLogout={handleLogout} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/inventory-management/*"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <InventryMenu onLogout={handleLogout} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/budget-management/*"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <BudgetMenu onLogout={handleLogout} />
               </ProtectedRoute>
             }
           />
