@@ -9,6 +9,7 @@ import {
   useDeleteFoodMutation,
   useSearchFoodsQuery
 } from '../services/foodManagementApi';
+import { ToastContainer, toast } from 'react-toastify';
 
 const { Title } = Typography;
 
@@ -27,7 +28,19 @@ const FoodList = () => {
     const [updateFood] = useUpdateFoodMutation();
     const [deleteFood] = useDeleteFoodMutation();
 
-    const handleSearch = (e) => setSearchText(e.target.value.toLowerCase());
+    const handleSearch = (e) => {
+        setSearchText(e.target.value.toLowerCase());
+    };
+
+    // Filter foods based on search text
+    const filteredFoods = foods.filter(food => 
+        food.name.toLowerCase().includes(searchText) ||
+        (food.unit && food.unit.toLowerCase().includes(searchText)) ||
+        (food.category && food.category.toLowerCase().includes(searchText))
+    );
+
+    // Determine which data to display based on search
+    const displayData = searchText ? filteredFoods : foods;
 
     const handleAddToList = (record) => {
         message.success(`Added ${record.name} to the list!`);
@@ -40,17 +53,40 @@ const FoodList = () => {
     };
 
     const handleDelete = async (record) => {
+        const isConfirmed = window.confirm('Are you sure you want to delete this record?');
+    
+        if (!isConfirmed) return;
+    
         try {
             await deleteFood(record._id).unwrap();
-            message.success(`${record.name} deleted successfully!`);
+            toast.success('Record Delete Success!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
         } catch (err) {
-            message.error(`Failed to delete ${record.name}: ${err.message}`);
+            toast.error('Error Occurred!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
         }
     };
+    
 
     const handleAddNew = () => {
-        setEditingRecord(null);
         form.resetFields();
+        setEditingRecord(null);
         setIsPopupVisible(true);
     };
 
@@ -67,10 +103,28 @@ const FoodList = () => {
         try {
             if (editingRecord) {
                 await updateFood({ id: editingRecord._id, ...values }).unwrap();
-                message.success(`${values.name} updated successfully!`);
+                toast.success('Record Update Success!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark"
+                    });
             } else {
                 await createFood(values).unwrap();
-                message.success(`${values.name} added successfully!`);
+                toast.success('Record Added Success!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark"
+                    });
             }
             setIsPopupVisible(false);
             form.resetFields();
@@ -80,8 +134,6 @@ const FoodList = () => {
         }
     };
 
-    // Determine which data to display based on search
-    const displayData = searchText.length >= 2 ? searchResults : foods;
 
     const columns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
