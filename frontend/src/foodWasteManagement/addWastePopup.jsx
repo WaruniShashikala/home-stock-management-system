@@ -17,6 +17,7 @@ import {
 import { UploadOutlined } from '@ant-design/icons';
 import { useCreateWasteMutation, useUpdateWasteMutation } from '../services/wasteManagementApi';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -24,7 +25,6 @@ const { Option } = Select;
 const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => {
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
-    const [date, setDate] = useState(null);
     const [createWaste] = useCreateWasteMutation();
     const [updateWaste] = useUpdateWasteMutation();
     const [uploading, setUploading] = useState(false); // State for upload loading
@@ -36,7 +36,6 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
                 date: initialValues.date ? moment(initialValues.date) : null
             };
             form.setFieldsValue(formattedValues);
-            setDate(formattedValues.date);
 
             if (initialValues.imageUrl) {
                 setFileList([
@@ -52,10 +51,8 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
         } else {
             form.resetFields();
             setFileList([]);
-            setDate(null);
         }
     }, [initialValues, visible, form]);
-
 
     const handleUploadChange = async ({ fileList: newFileList }) => {
         if (newFileList.length > 0) {
@@ -87,12 +84,6 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
         }
     };
 
-    const handleDateChange = (value) => {
-        const momentDate = value ? moment(value) : null;
-        setDate(momentDate);
-        form.setFieldsValue({ date: momentDate });
-    };
-
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
@@ -101,7 +92,12 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
             // Append all form values to FormData
             Object.entries(values).forEach(([key, value]) => {
                 if (value !== undefined && value !== null) {
-                    formData.append(key, value);
+                    // Convert moment date to ISO string before sending
+                    if (key === 'date' && moment.isMoment(value)) {
+                        formData.append(key, value.toISOString());
+                    } else {
+                        formData.append(key, value);
+                    }
                 }
             });
 
@@ -112,17 +108,44 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
 
             if (initialValues) {
                 await updateWaste({ id: initialValues._id, formData }).unwrap();
-                message.success('Waste record updated successfully!');
+                toast.success('Waste record updated successfully!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark"
+                });
             } else {
                 await createWaste(formData).unwrap();
-                message.success('Waste record created successfully!');
+                toast.success('Waste record created successfully!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark"
+                });
             }
 
             form.resetFields();
             setFileList([]);
-            setDate(null);
             onSave();
         } catch (error) {
+            toast.error('Something Went Wrong!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
             console.error('Error submitting form:', error);
             message.error(error.message || 'Failed to save waste record');
         }
@@ -235,7 +258,6 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
                         style={{ width: '100%' }}
                         size="large"
                         format="MM/DD/YYYY"
-                        onChange={handleDateChange}
                     />
                 </Form.Item>
 
