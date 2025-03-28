@@ -154,14 +154,14 @@ const Dashboard = () => {
   return (
     <div style={{ padding: '24px' }} ref={dashboardRef}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <AntTitle level={2}>Waste Summery</AntTitle>
+        <AntTitle level={2}>Waste Dashboard</AntTitle>
       </div>
       
       <Divider />
       
       <AntTitle level={3}>
         <PieChartOutlined style={{ marginRight: 8 }} />
-        Waste Analytics
+        Waste Summery
       </AntTitle>
       
       <Row gutter={[24, 24]} style={{ marginTop: 16 }}>
