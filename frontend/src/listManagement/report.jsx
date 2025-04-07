@@ -199,14 +199,7 @@ const Report = () => {
             <Option value="inventory">Inventory Overview</Option>
             <Option value="stock">Stock Analysis</Option>
             <Option value="expiry">Expiry Analysis</Option>
-          </Select>
-          
-          <RangePicker 
-            value={timeRange}
-            onChange={setTimeRange}
-            style={{ width: 250 }}
-          />
-          
+          </Select>  
           <Button 
             type="primary" 
             icon={<DownloadOutlined />}

@@ -3,9 +3,13 @@ import { wasteManagementApi } from '../services/wasteManagementApi';
 import { foodApi } from '../services/foodManagementApi'; 
 import { productManagementApi } from '../services/productManagementApi';
 import { budgetManagementApi } from '../services/budgetManagementApi';
+import { authApi } from '../services/authApi';
+import authReducer from '../slice/authSlice'; 
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer, // Add the auth reducer
+    [authApi.reducerPath]: authApi.reducer,
     [wasteManagementApi.reducerPath]: wasteManagementApi.reducer,
     [foodApi.reducerPath]: foodApi.reducer, 
     [productManagementApi.reducerPath]: productManagementApi.reducer,
@@ -13,6 +17,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
+      .concat(authApi.middleware)
       .concat(wasteManagementApi.middleware)
       .concat(foodApi.middleware)
       .concat(productManagementApi.middleware)

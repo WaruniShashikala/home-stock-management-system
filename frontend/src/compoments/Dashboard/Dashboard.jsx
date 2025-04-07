@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WasteMenu from '../../foodWasteManagement/WasteMenu';
 import ListMenu from '../../listManagement/listMenu';
 import InventryMenu from '../../inventoryManagement/inventoryMenu';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { useLogoutMutation, useUpdateProfileMutation } from '../../services/authApi';
+import { selectCurrentUser, updateUser } from '../../slice/authSlice';
+import Profile from '../Profile';
 
 import {
   MenuFoldOutlined,
@@ -28,12 +33,13 @@ const { Title, Text } = Typography;
 
 // Custom card component for dashboard tiles
 const DashboardCard = ({ icon, title, description, onClick, color }) => {
+
   return (
-    <Card 
-      hoverable 
+    <Card
+      hoverable
       onClick={onClick}
-      style={{ 
-        textAlign: 'center', 
+      style={{
+        textAlign: 'center',
         cursor: 'pointer',
         borderRadius: '12px',
         boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
@@ -65,7 +71,7 @@ const DashboardCard = ({ icon, title, description, onClick, color }) => {
 // Components for different views
 const DashboardView = ({ navigate }) => {
   const { token } = theme.useToken();
-  
+
   const dashboardCards = [
     {
       title: 'Waste Management',
@@ -131,11 +137,11 @@ const DashboardView = ({ navigate }) => {
         <Title level={3} style={{ color: token.colorTextHeading }}>Dashboard Overview</Title>
         <Text type="secondary" style={{ fontSize: '16px' }}>Welcome back! Here's what's happening today.</Text>
       </div>
-      
+
       <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
         {dashboardCards.map((card, index) => (
           <Col xs={24} sm={12} md={8} lg={6} key={index}>
-            <DashboardCard 
+            <DashboardCard
               icon={card.icon}
               title={card.title}
               description={card.description}
@@ -145,16 +151,16 @@ const DashboardView = ({ navigate }) => {
           </Col>
         ))}
       </Row>
-      
+
       <Row gutter={[24, 24]}>
         <Col xs={24} md={12}>
-          <Card 
-            title="Recent Activity" 
+          <Card
+            title="Recent Activity"
             style={{ borderRadius: '12px', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}
             headStyle={{ border: 'none', padding: '16px 24px' }}
             bodyStyle={{ padding: '0' }}
           >
-            <Table 
+            <Table
               columns={[
                 { title: 'Event', dataIndex: 'event', key: 'event' },
                 { title: 'Time', dataIndex: 'time', key: 'time', width: '120px' }
@@ -173,44 +179,44 @@ const DashboardView = ({ navigate }) => {
           </Card>
         </Col>
         <Col xs={24} md={12}>
-          <Card 
-            title="Quick Stats" 
+          <Card
+            title="Quick Stats"
             style={{ borderRadius: '12px', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}
             headStyle={{ border: 'none', padding: '16px 24px' }}
           >
             <Row gutter={[16, 16]}>
               <Col xs={12} sm={12} md={12} lg={12}>
                 <Card bordered={false} bodyStyle={{ padding: '16px' }}>
-                  <Statistic 
-                    title="Active Users" 
-                    value={1128} 
+                  <Statistic
+                    title="Active Users"
+                    value={1128}
                     prefix={<UserOutlined style={{ color: token.colorPrimary }} />}
                   />
                 </Card>
               </Col>
               <Col xs={12} sm={12} md={12} lg={12}>
                 <Card bordered={false} bodyStyle={{ padding: '16px' }}>
-                  <Statistic 
-                    title="Items in Inventory" 
-                    value={243} 
+                  <Statistic
+                    title="Items in Inventory"
+                    value={243}
                     prefix={<ShoppingOutlined style={{ color: '#faad14' }} />}
                   />
                 </Card>
               </Col>
               <Col xs={12} sm={12} md={12} lg={12}>
                 <Card bordered={false} bodyStyle={{ padding: '16px' }}>
-                  <Statistic 
-                    title="Shopping Items" 
-                    value={27} 
+                  <Statistic
+                    title="Shopping Items"
+                    value={27}
                     prefix={<ShoppingCartOutlined style={{ color: '#722ed1' }} />}
                   />
                 </Card>
               </Col>
               <Col xs={12} sm={12} md={12} lg={12}>
                 <Card bordered={false} bodyStyle={{ padding: '16px' }}>
-                  <Statistic 
-                    title="Waste Saved" 
-                    value="45%" 
+                  <Statistic
+                    title="Waste Saved"
+                    value="45%"
                     prefix={<DeleteOutlined style={{ color: '#52c41a' }} />}
                   />
                 </Card>
@@ -224,90 +230,40 @@ const DashboardView = ({ navigate }) => {
 };
 
 const menuItems = [
-  { 
-    key: '1', 
-    icon: <AppstoreOutlined />, 
-    label: 'Dashboard', 
-    component: DashboardView 
-  },
-  { 
-    key: '2', 
-    icon: <DeleteOutlined />, 
-    label: 'Waste Management', 
-    component: WasteMenu,
-    path: '/waste-management'
-  },
-  { 
-    key: '3', 
-    icon: <OrderedListOutlined />, 
-    label: 'List Management', 
-    component: ListMenu,
-    path: '/list-management'
-  },
-  { 
-    key: '4', 
-    icon: <ShoppingOutlined />, 
-    label: 'Inventory Management', 
-    component: InventryMenu,
-    path: '/inventory-management'
-  },
-  // { 
-  //   key: '5', 
-  //   icon: <TeamOutlined />, 
-  //   label: 'User Management', 
-  //   component: WasteMenu,
-  //   path: '/user-management'
-  // },
-  // { 
-  //   key: '6', 
-  //   icon: <ShoppingCartOutlined />, 
-  //   label: 'Shopping List', 
-  //   component: ListMenu,
-  //   path: '/shopping-list'
-  // },
-  // { 
-  //   key: '7', 
-  //   icon: <AppstoreAddOutlined />, 
-  //   label: 'Categories', 
-  //   component: ListMenu,
-  //   path: '/categories'
-  // },
-  { 
-    key: '8', 
-    icon: <DollarOutlined />, 
-    label: 'Budget', 
-    component: WasteMenu,
-    path: '/budget-management'
-  },
-  // { 
-  //   key: '9', 
-  //   icon: <BarChartOutlined/>, 
-  //   label: 'Reports', 
-  //   component: WasteMenu,
-  //   path: '/reports'
-  // },
-];
-
-const userMenuItems = [
   {
     key: '1',
-    label: 'Profile',
-    icon: <UserOutlined />
+    icon: <AppstoreOutlined />,
+    label: 'Dashboard',
+    component: DashboardView
   },
   {
     key: '2',
-    label: 'Settings',
-    icon: <SettingOutlined />
-  },
-  {
-    type: 'divider'
+    icon: <DeleteOutlined />,
+    label: 'Waste Management',
+    component: WasteMenu,
+    path: '/waste-management'
   },
   {
     key: '3',
-    label: 'Logout',
-    icon: <LogoutOutlined />,
-    danger: true
-  }
+    icon: <OrderedListOutlined />,
+    label: 'List Management',
+    component: ListMenu,
+    path: '/list-management'
+  },
+  {
+    key: '4',
+    icon: <ShoppingOutlined />,
+    label: 'Inventory Management',
+    component: InventryMenu,
+    path: '/inventory-management'
+  },
+  {
+    key: '8',
+    icon: <DollarOutlined />,
+    label: 'Budget',
+    component: WasteMenu,
+    path: '/budget-management'
+  },
 ];
 
 const notificationItems = [
@@ -337,11 +293,62 @@ const MainDashboard = () => {
   const [openKeys, setOpenKeys] = useState(['sub1']);
   const navigate = useNavigate();
   const { token } = theme.useToken();
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
+  const updatedUser = useSelector(updateUser)
+  const [logout] = useLogoutMutation();
+  const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
+  const [updateProfile] = useUpdateProfileMutation();
   
+  useEffect(() => {
+    const authDataString = localStorage.getItem('auth');
+    if (authDataString) {
+      try {
+        const authData = JSON.parse(authDataString);
+        console.log('Parsed auth data:', authData);
+        console.log('Username:', authData.user.username);
+        console.log('Token:', authData.token);
+        console.log('Is authenticated:', authData.isAuthenticated);
+        console.log('Last activity:', new Date(authData.lastActivity));
+        
+      } catch (error) {
+        console.error('Error parsing auth data:', error);
+        localStorage.removeItem('auth');
+      }
+    } else {
+      console.log('No auth data found in localStorage');
+    }
+  },[])
+
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
+  // const handleProfileUpdate = (updatedUser) => {
+  //   dispatch(updateUser(updatedUser)); // Dispatch the updateUser action
+  // };
+
+  const handleProfileUpdate = async (updatedData) => {
+    try {
+      const response = await updateProfile(updatedData).unwrap();
+      dispatch(updateUser(response.user));
+      setIsProfileModalVisible(false);
+    } catch (err) {
+      console.error('Failed to update profile:', err);
+    }
+  };
+  
+  // Handle logout function
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      localStorage.removeItem('auth');
+      navigate('/login');
+    } catch (err) {
+      console.error('Failed to logout:', err);
+    }
+  };
+  
   const onMenuSelect = ({ key }) => {
     const selectedItem = menuItems.find(item => item.key === key);
     if (selectedItem?.path) {
@@ -363,11 +370,28 @@ const MainDashboard = () => {
   const CurrentComponent = selectedItem?.component || DashboardView;
   const componentProps = { navigate, ...selectedItem?.props };
 
+  const userMenuItems = [
+    {
+      key: '1',
+      label: 'Profile',
+      icon: <UserOutlined />,
+      onClick: () => setIsProfileModalVisible(true)
+    },
+    {
+      key: '3',
+      label: 'Logout',
+      icon: <LogoutOutlined />,
+      danger: true,
+      onClick: handleLogout
+    }
+  ];
+
+
   return (
     <Layout style={{ minHeight: '100vh', backgroundColor: '#f5f7fa' }}>
-      <Sider 
-        trigger={null} 
-        collapsible 
+      <Sider
+        trigger={null}
+        collapsible
         collapsed={collapsed}
         width={280}
         style={{
@@ -402,13 +426,13 @@ const MainDashboard = () => {
           theme="light"
           inlineCollapsed={collapsed}
           items={menuItems}
-          style={{ 
+          style={{
             borderRight: 0,
             padding: '8px 0'
           }}
         />
       </Sider>
-      
+
       <Layout style={{ marginLeft: collapsed ? 80 : 280 }}>
         <Header style={{
           padding: 0,
@@ -436,25 +460,12 @@ const MainDashboard = () => {
               }}
             />
           </div>
-          
+
           <Space size="large">
-            <Dropdown menu={{ items: notificationItems }} trigger={['click']} overlayStyle={{ width: '300px' }}>
-              <Badge count={5} size="small" style={{ 
-                boxShadow: `0 0 0 2px ${token.colorBgContainer}`,
-                cursor: 'pointer'
-              }}>
-                <Button 
-                  type="text" 
-                  icon={<BellOutlined style={{ fontSize: '18px', color: token.colorTextSecondary }} />}
-                  style={{ width: 48 }}
-                />
-              </Badge>
-            </Dropdown>
-            
-            <Dropdown menu={{ items: userMenuItems }}>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+            <Dropdown menu={{ items: userMenuItems }} trigger={['click']}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
                 cursor: 'pointer',
                 padding: '8px 12px',
                 borderRadius: '8px',
@@ -463,24 +474,37 @@ const MainDashboard = () => {
                   backgroundColor: token.colorBgTextHover
                 }
               }}>
-                <Avatar 
-                  icon={<UserOutlined />} 
-                  style={{ 
-                    backgroundColor: token.colorPrimary,
-                    marginRight: !collapsed ? '8px' : 0
-                  }}
-                />
+                {user?.profilePicture ? (
+                  <Avatar
+                    src={user.profilePicture}
+                    style={{
+                      marginRight: !collapsed ? '8px' : 0
+                    }}
+                  />
+                ) : (
+                  <Avatar
+                    icon={<UserOutlined />}
+                    style={{
+                      backgroundColor: token.colorPrimary,
+                      marginRight: !collapsed ? '8px' : 0
+                    }}
+                  />
+                )}
                 {!collapsed && (
                   <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '8px' }}>
-                    <Text strong style={{ lineHeight: '1.2' }}>Admin User</Text>
-                    <Text type="secondary" style={{ fontSize: '12px' }}>Administrator</Text>
+                    <Text strong style={{ lineHeight: '1.2' }}>
+                      {user?.username || user?.name || 'User'} {/* Fallback to name if username not available */}
+                    </Text>
+                    <Text type="secondary" style={{ fontSize: '12px' }}>
+                      {user?.role ? `${user.role.charAt(0).toUpperCase()}${user.role.slice(1)}` : 'User'}
+                    </Text>
                   </div>
                 )}
               </div>
             </Dropdown>
           </Space>
         </Header>
-        
+
         <Content style={{
           margin: '24px 16px',
           padding: 24,
@@ -490,6 +514,13 @@ const MainDashboard = () => {
           <CurrentComponent {...componentProps} />
         </Content>
       </Layout>
+      <Profile
+        user={user}
+        visible={isProfileModalVisible}
+        onCancel={() => setIsProfileModalVisible(false)}
+        onUpdate={handleProfileUpdate}
+        updateProfile={updateProfile}
+      />
     </Layout>
   );
 };
