@@ -1,7 +1,10 @@
 import './App.css';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from './slice/authSlice';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState } from 'react';
-import Dashboard from './conponents/Dashboard/Dashboard';
+import { useSelector } from 'react-redux';
+import Dashboard from './compoments/Dashboard/Dashboard';
 import LandingPage from './pages/landingPage/langingPage';
 import Login from './pages/login/login';
 import Signup from './pages/signup';
@@ -11,9 +14,9 @@ import { ToastContainer } from 'react-toastify';
 import InventryMenu from './inventoryManagement/inventoryMenu';
 import BudgetMenu from './budgetManagement/budgetMenu';
 
-
-// Protected Route wrapper
-const ProtectedRoute = ({ isAuthenticated, children }) => {
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -21,18 +24,20 @@ const ProtectedRoute = ({ isAuthenticated, children }) => {
 };
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-  // Simulate login/logout functions
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    return <Navigate to="/dashboard" />;
-  };
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    return <Navigate to="/" />;
-  };
+  useEffect(() => {
+    // Check for existing auth data in localStorage
+    if (typeof window !== 'undefined') {
+      const storedAuth = localStorage.getItem('auth');
+      if (storedAuth) {
+        const { user, token } = JSON.parse(storedAuth);
+        dispatch(setCredentials({ user, token }));
+      }
+    }
+  }, [dispatch]);
+
 
   return (
     <Router>
@@ -41,52 +46,47 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/login"
-            element={<Login onLogin={handleLogin} />}
-          />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
           {/* Protected routes */}
           <Route
             path="/dashboard/*"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Dashboard onLogout={handleLogout} />
+              <ProtectedRoute>
+                <Dashboard />
               </ProtectedRoute>
             }
           />
           <Route
             path="/waste-management/*"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <WasteMenu onLogout={handleLogout} />
+              <ProtectedRoute>
+                <WasteMenu />
               </ProtectedRoute>
             }
           />
           <Route
             path="/list-management/*"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <ListMenu onLogout={handleLogout} />
+              <ProtectedRoute>
+                <ListMenu />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/inventory-management/*"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <InventryMenu onLogout={handleLogout} />
+              <ProtectedRoute>
+                <InventryMenu />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/budget-management/*"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <BudgetMenu onLogout={handleLogout} />
+              <ProtectedRoute>
+                <BudgetMenu />
               </ProtectedRoute>
             }
           />

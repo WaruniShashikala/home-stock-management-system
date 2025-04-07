@@ -22,6 +22,7 @@ dotenv.config();
 dbConnect();
 
 //routes
+app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/waste", require("./routes/wasteRoutes"));
 app.use("/api/food", require("./routes/foodList"));
 app.use("/api/products", require("./routes/productRoutes"));

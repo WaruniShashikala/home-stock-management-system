@@ -12,40 +12,33 @@ import {
   LockOutlined, 
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLoginMutation } from '../../services/authApi';
+import { setCredentials } from '../../slice/authSlice';
+import { useDispatch } from 'react-redux';
 import './login.css';
 
 const { Title, Text } = Typography;
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+  const [login, { isLoading }] = useLoginMutation();
   const [error, setError] = useState(null);
 
   const onFinish = async (values) => {
-    setLoading(true);
-    setError(null);
-    
     try {
-      console.log('Login values:', values);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock authentication - replace with real API call
-      if (values.username === 'demo' && values.password === 'demo123') {
-        onLogin();
-        navigate('/dashboard');
-      } else {
-        setError('Invalid username or password');
-      }
+      const response = await login(values).unwrap();
+      dispatch(setCredentials({
+        user: response.user,
+        token: response.token
+      }));
+      navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-      setError('An error occurred during login. Please try again.');
-    } finally {
-      setLoading(false);
+      setError(err.data?.error || 'Login failed. Please try again.');
     }
   };
-
 
   return (
     <div className="login-container">
@@ -76,16 +69,16 @@ const Login = ({ onLogin }) => {
             className="login-form"
           >
             <Form.Item
-              name="username"
+              name="email" // Changed from username to email to match backend
               rules={[
-                { required: true, message: 'Please input your username!' },
-                { min: 4, message: 'Username must be at least 4 characters' }
+                { required: true, message: 'Please input your email!' },
+                { type: 'email', message: 'Please enter a valid email' }
               ]}
               className="login-form-item"
             >
               <Input 
                 prefix={<UserOutlined />} 
-                placeholder="Username" 
+                placeholder="Email" 
                 size="large"
               />
             </Form.Item>
@@ -118,8 +111,8 @@ const Login = ({ onLogin }) => {
                 type="primary" 
                 htmlType="submit" 
                 className="login-form-button"
-                loading={loading}
-                disabled={loading}
+                loading={isLoading}
+                disabled={isLoading}
               >
                 Log In
               </Button>

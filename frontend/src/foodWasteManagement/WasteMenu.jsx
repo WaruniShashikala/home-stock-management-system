@@ -16,8 +16,15 @@ import {
   PlusCircleOutlined,
   AppstoreAddOutlined
 } from '@ant-design/icons';
-import { Button, Menu, Layout, Dropdown, Avatar, Badge, Space, Card, Table, Statistic } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '../services/authApi';
+import Profile from '../compoments/Profile';
+import { useUpdateProfileMutation } from '../services/authApi';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, updateUser } from '../slice/authSlice';
+import { Button, Menu, Layout, Dropdown, Avatar, Badge, Space, Card, Table, Statistic, Typography } from 'antd';
 const { Header, Sider, Content } = Layout;
+const { Text } = Typography;
 
 
 // Components for different views
@@ -56,62 +63,51 @@ const DashboardView = () => (
   </div>
 );
 
-
 const menuItems = [
-  // { key: '1', icon: <AppstoreAddOutlined />, label: 'Main Dashboard', component: Dashboard },
   { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
   { key: '2', icon: <PlusCircleOutlined/>, label: 'Log Waste', component: wasteList },
   { key: '3', icon: <BarChartOutlined/>, label: 'Reports', component: report },
-  { key: '4', icon: <HeartOutlined/>, label: 'Donations', component:  Donation},
+  { key: '4', icon: <HeartOutlined/>, label: 'Donations', component: Donation},
 ];
 
-const userMenuItems = [
-  {
-    key: '1',
-    label: 'Profile',
-    icon: <UserOutlined />
-  },
-  {
-    key: '2',
-    label: 'Settings',
-    icon: <SettingOutlined />
-  },
-  {
-    type: 'divider'
-  },
-  {
-    key: '3',
-    label: 'Logout',
-    icon: <LogoutOutlined />,
-    danger: true
-  }
-];
-
-const notificationItems = [
-  {
-    key: '1',
-    label: (
-      <>
-        <strong>New message</strong>
-        <div>You have 1 new message</div>
-      </>
-    )
-  },
-  {
-    key: '2',
-    label: (
-      <>
-        <strong>System update</strong>
-        <div>System will be updated at 3:00 AM</div>
-      </>
-    )
-  }
-];
 
 const WasteMenu = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState(['1']);
   const [openKeys, setOpenKeys] = useState(['sub1']);
+  const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
+  const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
+  const user = useSelector(selectCurrentUser);
+  const [updateProfile] = useUpdateProfileMutation();
+  const dispatch = useDispatch();
+
+  // Handle logout function
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      localStorage.removeItem('auth');
+      navigate('/login');
+    } catch (err) {
+      console.error('Failed to logout:', err);
+    }
+  };
+
+  const userMenuItems = [
+    {
+      key: '1',
+      label: 'Profile',
+      icon: <UserOutlined />,
+      onClick: () => setIsProfileModalVisible(true)
+    },
+    {
+      key: '3',
+      label: 'Logout',
+      icon: <LogoutOutlined />,
+      danger: true,
+      onClick: handleLogout
+    }
+  ];
   
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -126,21 +122,19 @@ const WasteMenu = () => {
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
 
-  // Find the current component to render based on selected key
   const findComponentByKey = (key) => {
-    // Flatten all menu items including nested ones
-    const flattenItems = (items) => {
-      return items.reduce((acc, item) => {
-        if (item.children) {
-          return [...acc, item, ...flattenItems(item.children)];
-        }
-        return [...acc, item];
-      }, []);
-    };
-
-    const allItems = flattenItems(menuItems);
-    return allItems.find(item => item.key === key);
+    return menuItems.find(item => item.key === key);
   };
+
+  const handleProfileUpdate = async (updatedData) => {
+      try {
+        const response = await updateProfile(updatedData).unwrap();
+        dispatch(updateUser(response.user));
+        setIsProfileModalVisible(false);
+      } catch (err) {
+        console.error('Failed to update profile:', err);
+      }
+    };
 
   const selectedItem = findComponentByKey(selectedKeys[0]);
   const CurrentComponent = selectedItem?.component || DashboardView;
@@ -213,23 +207,40 @@ const WasteMenu = () => {
           </div>
           
           <Space size="large">
-            <Dropdown menu={{ items: notificationItems }} trigger={['click']}>
-              <Badge count={5} size="small">
-                <Button 
-                  type="text" 
-                  icon={<BellOutlined style={{ fontSize: '16px' }} />}
-                  style={{ width: 48 }}
-                />
-              </Badge>
-            </Dropdown>
-            
-            <Dropdown menu={{ items: userMenuItems }}>
-              <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                <Avatar 
-                  icon={<UserOutlined />} 
-                  style={{ backgroundColor: '#1890ff', marginRight: 8 }}
-                />
-                {!collapsed && <span>Admin User</span>}
+            <Dropdown menu={{ items: userMenuItems }} trigger={['click']}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                cursor: 'pointer',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                ':hover': {
+                  backgroundColor: '#f5f5f5'
+                }
+              }}>
+                {user?.profilePicture ? (
+                  <Avatar
+                    src={user.profilePicture}
+                    style={{
+                      marginRight: !collapsed ? '8px' : 0
+                    }}
+                  />
+                ) : (
+                  <Avatar
+                    icon={<UserOutlined />}
+                    style={{
+                      marginRight: !collapsed ? '8px' : 0
+                    }}
+                  />
+                )}
+                {!collapsed && (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Text strong>{user?.username || user?.name || 'User'}</Text>
+                    <Text type="secondary" style={{ fontSize: '12px' }}>
+                      {user?.role ? `${user.role.charAt(0).toUpperCase()}${user.role.slice(1)}` : 'User'}
+                    </Text>
+                  </div>
+                )}
               </div>
             </Dropdown>
           </Space>
@@ -245,6 +256,14 @@ const WasteMenu = () => {
           <CurrentComponent {...componentProps} />
         </Content>
       </Layout>
+      
+      <Profile
+        user={user}
+        visible={isProfileModalVisible}
+        onCancel={() => setIsProfileModalVisible(false)}
+        onUpdate={handleProfileUpdate}
+        updateProfile={updateProfile}
+      />
     </Layout>
   );
 };

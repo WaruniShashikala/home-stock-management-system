@@ -6,55 +6,41 @@ import {
   Card, 
   Typography, 
   Alert, 
-  Spin,
-  Checkbox
 } from 'antd';
 import { 
   UserOutlined, 
   MailOutlined, 
-  LockOutlined,
+  LockOutlined 
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
-import './Signup.css'; // We'll create this CSS file
+import { useRegisterMutation } from '../services/authApi';
+import './Signup.css'
 
 const { Title, Text } = Typography;
 
 const Signup = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+  const [register, { isLoading }] = useRegisterMutation();
   const [error, setError] = useState(null);
 
   const onFinish = async (values) => {
-    setLoading(true);
-    setError(null);
-    
+    console.log(values)
     try {
-      console.log('Signup values:', values);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Mock registration - replace with real API call
-      if (values.email && values.password) {
-        navigate('/login'); // Redirect to login after successful signup
-      } else {
-        setError('Please fill all required fields');
-      }
+      await register(values).unwrap();
+      navigate('/login');
     } catch (err) {
-      console.error('Signup error:', err);
-      setError('An error occurred during registration. Please try again.');
-    } finally {
-      setLoading(false);
+      console.error('Registration error:', err);
+      setError(err.data?.error || 'Registration failed. Please try again.');
     }
   };
-
 
   return (
     <div className="signup-container">
       <Card className="signup-card" bordered={false}>
         <div className="signup-header">
-          <Title level={3} className="signup-title">Create Your Account</Title>
-          <Text className="signup-subtitle">Join us to manage your home inventory</Text>
+          <Title level={3} className="signup-title">Create Account</Title>
+          <Text className="signup-subtitle">Join to manage your home inventory</Text>
         </div>
         
         <div className="signup-body">
@@ -72,7 +58,6 @@ const Signup = () => {
           <Form
             form={form}
             name="signup"
-            initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete="off"
             className="signup-form"
@@ -96,13 +81,13 @@ const Signup = () => {
               name="email"
               rules={[
                 { required: true, message: 'Please input your email!' },
-                { type: 'email', message: 'Please enter a valid email!' }
+                { type: 'email', message: 'Please enter a valid email' }
               ]}
               className="signup-form-item"
             >
-              <Input
-                prefix={<MailOutlined />}
-                placeholder="Email"
+              <Input 
+                prefix={<MailOutlined />} 
+                placeholder="Email" 
                 size="large"
               />
             </Form.Item>
@@ -111,7 +96,7 @@ const Signup = () => {
               name="password"
               rules={[
                 { required: true, message: 'Please input your password!' },
-                { min: 8, message: 'Password must be at least 8 characters' }
+                { min: 6, message: 'Password must be at least 6 characters' }
               ]}
               className="signup-form-item"
             >
@@ -122,58 +107,24 @@ const Signup = () => {
               />
             </Form.Item>
 
-            <Form.Item
-              name="confirmPassword"
-              dependencies={['password']}
-              rules={[
-                { required: true, message: 'Please confirm your password!' },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error('The two passwords do not match!'));
-                  },
-                }),
-              ]}
-              className="signup-form-item"
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                placeholder="Confirm Password"
-                size="large"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="agreement"
-              valuePropName="checked"
-              rules={[
-                { validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('You must accept the terms and conditions')) },
-              ]}
-              className="signup-form-item"
-            >
-              <Checkbox>
-                I agree to the <Link to="/terms">Terms and Conditions</Link>
-              </Checkbox>
-            </Form.Item>
-
             <Form.Item className="signup-form-item">
               <Button 
                 type="primary" 
                 htmlType="submit" 
                 className="signup-form-button"
-                loading={loading}
-                disabled={loading}
+                loading={isLoading}
+                disabled={isLoading}
+                block
               >
-                {loading ? <Spin size="small" /> : 'Create Account'}
+                Sign Up
               </Button>
             </Form.Item>
           </Form>
+
           <div className="signup-footer">
             Already have an account?{' '}
             <Link to="/login">
-              <Text strong>Login</Text>
+              <Text strong>Log in</Text>
             </Link>
           </div>
         </div>
