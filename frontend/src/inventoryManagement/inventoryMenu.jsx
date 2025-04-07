@@ -19,6 +19,7 @@ import { useLogoutMutation, useUpdateProfileMutation } from '../services/authApi
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentUser, updateUser } from '../slice/authSlice';
 import Profile from '../compoments/Profile';
+import { Link } from 'react-router-dom';
 import { Button, Menu, Layout, Dropdown, Avatar, Badge, Space, Card, Table, Statistic, Typography } from 'antd';
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -42,7 +43,7 @@ const DashboardView = () => (
         </Space>
       </div>
       <Card title="Recent Activity">
-        <Table 
+        <Table
           columns={[
             { title: 'Event', dataIndex: 'event' },
             { title: 'Time', dataIndex: 'time' }
@@ -61,8 +62,8 @@ const DashboardView = () => (
 
 const menuItems = [
   { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
-  { key: '2', icon: <PlusCircleOutlined/>, label: 'Product List', component: ProductList },
-  { key: '4', icon: <BarChartOutlined/>, label: 'Report', component: Report },
+  { key: '2', icon: <PlusCircleOutlined />, label: 'Product List', component: ProductList },
+  { key: '4', icon: <BarChartOutlined />, label: 'Report', component: Report },
 ];
 
 
@@ -141,9 +142,9 @@ const InventryMenu = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider 
-        trigger={null} 
-        collapsible 
+      <Sider
+        trigger={null}
+        collapsible
         collapsed={collapsed}
         width={250}
         style={{
@@ -154,17 +155,19 @@ const InventryMenu = () => {
           backgroundColor: '#fff'
         }}
       >
-        <div className="logo" style={{
-          height: '64px',
-          display: 'flex',
-          color: '#4531e8',
-          fontSize: collapsed ? '16px' : '20px',
-          fontWeight: 'bold',
-          backgroundColor: '#fff',
-          marginLeft: '28px'
-        }}>
-          {collapsed ? 'IV' : 'Inventory'}
-        </div>
+        <Link to='/dashboard'>
+          <div className="logo" style={{
+            height: '64px',
+            display: 'flex',
+            color: '#4531e8',
+            fontSize: collapsed ? '16px' : '20px',
+            fontWeight: 'bold',
+            backgroundColor: '#fff',
+            marginLeft: '28px'
+          }}>
+            {collapsed ? 'IV' : 'Inventory'}
+          </div>
+        </Link>
         <Menu
           selectedKeys={selectedKeys}
           openKeys={openKeys}
@@ -177,7 +180,7 @@ const InventryMenu = () => {
           style={{ borderRight: 0 }}
         />
       </Sider>
-      
+
       <Layout style={{ marginLeft: collapsed ? 80 : 250 }}>
         <Header style={{
           padding: 0,
@@ -204,12 +207,12 @@ const InventryMenu = () => {
               }}
             />
           </div>
-          
+
           <Space size="large">
             <Dropdown menu={{ items: userMenuItems }} trigger={['click']}>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
                 cursor: 'pointer',
                 padding: '8px 12px',
                 borderRadius: '8px',
@@ -225,9 +228,9 @@ const InventryMenu = () => {
                 ) : (
                   <Avatar
                     icon={<UserOutlined />}
-                    style={{ 
+                    style={{
                       backgroundColor: '#1890ff',
-                      marginRight: !collapsed ? '8px' : 0 
+                      marginRight: !collapsed ? '8px' : 0
                     }}
                   />
                 )}
@@ -243,7 +246,7 @@ const InventryMenu = () => {
             </Dropdown>
           </Space>
         </Header>
-        
+
         <Content style={{
           margin: '24px 16px',
           padding: 24,

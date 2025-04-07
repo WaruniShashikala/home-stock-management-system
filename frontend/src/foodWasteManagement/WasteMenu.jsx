@@ -22,6 +22,7 @@ import Profile from '../compoments/Profile';
 import { useUpdateProfileMutation } from '../services/authApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentUser, updateUser } from '../slice/authSlice';
+import { Link } from 'react-router-dom';
 import { Button, Menu, Layout, Dropdown, Avatar, Badge, Space, Card, Table, Statistic, Typography } from 'antd';
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -46,7 +47,7 @@ const DashboardView = () => (
         </Space>
       </div>
       <Card title="Recent Activity">
-        <Table 
+        <Table
           columns={[
             { title: 'Event', dataIndex: 'event' },
             { title: 'Time', dataIndex: 'time' }
@@ -65,9 +66,9 @@ const DashboardView = () => (
 
 const menuItems = [
   { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
-  { key: '2', icon: <PlusCircleOutlined/>, label: 'Log Waste', component: wasteList },
-  { key: '3', icon: <BarChartOutlined/>, label: 'Reports', component: report },
-  { key: '4', icon: <HeartOutlined/>, label: 'Donations', component: Donation},
+  { key: '2', icon: <PlusCircleOutlined />, label: 'Log Waste', component: wasteList },
+  { key: '3', icon: <BarChartOutlined />, label: 'Reports', component: report },
+  { key: '4', icon: <HeartOutlined />, label: 'Donations', component: Donation },
 ];
 
 
@@ -108,7 +109,7 @@ const WasteMenu = () => {
       onClick: handleLogout
     }
   ];
-  
+
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
@@ -127,14 +128,14 @@ const WasteMenu = () => {
   };
 
   const handleProfileUpdate = async (updatedData) => {
-      try {
-        const response = await updateProfile(updatedData).unwrap();
-        dispatch(updateUser(response.user));
-        setIsProfileModalVisible(false);
-      } catch (err) {
-        console.error('Failed to update profile:', err);
-      }
-    };
+    try {
+      const response = await updateProfile(updatedData).unwrap();
+      dispatch(updateUser(response.user));
+      setIsProfileModalVisible(false);
+    } catch (err) {
+      console.error('Failed to update profile:', err);
+    }
+  };
 
   const selectedItem = findComponentByKey(selectedKeys[0]);
   const CurrentComponent = selectedItem?.component || DashboardView;
@@ -142,9 +143,9 @@ const WasteMenu = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider 
-        trigger={null} 
-        collapsible 
+      <Sider
+        trigger={null}
+        collapsible
         collapsed={collapsed}
         width={250}
         style={{
@@ -155,17 +156,19 @@ const WasteMenu = () => {
           backgroundColor: '#fff'
         }}
       >
-        <div className="logo" style={{
-          height: '64px',
-          display: 'flex',
-          color: '#4531e8',
-          fontSize: collapsed ? '16px' : '20px',
-          fontWeight: 'bold',
-          backgroundColor: '#fff',
-          marginLeft: '28px'
-        }}>
-          {collapsed ? 'WL' : 'Waste Log'}
-        </div>
+        <Link to='/dashboard'>
+          <div className="logo" style={{
+            height: '64px',
+            display: 'flex',
+            color: '#4531e8',
+            fontSize: collapsed ? '16px' : '20px',
+            fontWeight: 'bold',
+            backgroundColor: '#fff',
+            marginLeft: '28px'
+          }}>
+            {collapsed ? 'WL' : 'Waste Log'}
+          </div>
+        </Link>
         <Menu
           selectedKeys={selectedKeys}
           openKeys={openKeys}
@@ -178,7 +181,7 @@ const WasteMenu = () => {
           style={{ borderRight: 0 }}
         />
       </Sider>
-      
+
       <Layout style={{ marginLeft: collapsed ? 80 : 250 }}>
         <Header style={{
           padding: 0,
@@ -205,12 +208,12 @@ const WasteMenu = () => {
               }}
             />
           </div>
-          
+
           <Space size="large">
             <Dropdown menu={{ items: userMenuItems }} trigger={['click']}>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
                 cursor: 'pointer',
                 padding: '8px 12px',
                 borderRadius: '8px',
@@ -245,7 +248,7 @@ const WasteMenu = () => {
             </Dropdown>
           </Space>
         </Header>
-        
+
         <Content style={{
           margin: '24px 16px',
           padding: 24,
@@ -256,7 +259,7 @@ const WasteMenu = () => {
           <CurrentComponent {...componentProps} />
         </Content>
       </Layout>
-      
+
       <Profile
         user={user}
         visible={isProfileModalVisible}
