@@ -1,13 +1,4 @@
 import React, { useState } from 'react';
-import Report from './report';
-import BudgetList from './budgetList';
-import Dashboard from './dashboard';
-import { useNavigate } from 'react-router-dom';
-import { useLogoutMutation, useUpdateProfileMutation } from '../services/authApi';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectCurrentUser, updateUser } from '../slice/authSlice';
-import Profile from '../compoments/Profile';
-import { Link } from 'react-router-dom';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -20,7 +11,16 @@ import {
   AppstoreOutlined,
   PlusCircleOutlined
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { useLogoutMutation, useUpdateProfileMutation } from '../services/authApi';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, updateUser } from '../slice/authSlice';
+import Profile from '../compoments/Profile';
+import { Link } from 'react-router-dom';
 import { Button, Menu, Layout, Dropdown, Avatar, Badge, Space, Card, Table, Statistic, Typography } from 'antd';
+import dashboard from './dashboard';
+import userList from './userList';
+import userReport from './userReport';
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
 
@@ -61,12 +61,12 @@ const DashboardView = () => (
 );
 
 const menuItems = [
-  { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
-  { key: '2', icon: <PlusCircleOutlined />, label: 'Budget List', component: BudgetList },
-  { key: '4', icon: <BarChartOutlined />, label: 'Report', component: Report },
+  { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: dashboard },
+  { key: '2', icon: <PlusCircleOutlined />, label: 'User List', component: userList },
+  //{ key: '3', icon: <BarChartOutlined />, label: 'Report', component: userReport },
 ];
 
-const BudgetMenu = () => {
+const UserMenu = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState(['1']);
   const [openKeys, setOpenKeys] = useState(['sub1']);
@@ -161,7 +161,7 @@ const BudgetMenu = () => {
             backgroundColor: '#fff',
             marginLeft: '28px'
           }}>
-            {collapsed ? 'BG' : 'Budget'}
+            {collapsed ? 'UM' : 'User Management'}
           </div>
         </Link>
         <Menu
@@ -265,4 +265,4 @@ const BudgetMenu = () => {
   );
 };
 
-export default BudgetMenu;
+export default UserMenu;

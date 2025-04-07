@@ -27,6 +27,7 @@ import {
   AppstoreAddOutlined,
   DollarOutlined
 } from '@ant-design/icons';
+import UserMenu from '../../userManagement/userMenu';
 import { Button, Menu, Layout, Dropdown, Avatar, Badge, Space, Card, Table, Statistic, Row, Col, Typography, theme } from 'antd';
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -229,7 +230,7 @@ const DashboardView = ({ navigate }) => {
   );
 };
 
-const menuItems = [
+const baseMenuItems = [
   {
     key: '1',
     icon: <AppstoreOutlined />,
@@ -266,26 +267,6 @@ const menuItems = [
   },
 ];
 
-const notificationItems = [
-  {
-    key: '1',
-    label: (
-      <>
-        <strong>New message</strong>
-        <div>You have 1 new message</div>
-      </>
-    )
-  },
-  {
-    key: '2',
-    label: (
-      <>
-        <strong>System update</strong>
-        <div>System will be updated at 3:00 AM</div>
-      </>
-    )
-  }
-];
 
 const MainDashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -299,18 +280,25 @@ const MainDashboard = () => {
   const [logout] = useLogoutMutation();
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [updateProfile] = useUpdateProfileMutation();
+
+  const menuItems = [
+    ...baseMenuItems,
+    ...(user.role === 'admin'
+      ? [{
+          key: '9',
+          icon: <SettingOutlined />,
+          label: 'User Management',
+          component: UserMenu, 
+          path: '/user-management'
+        }]
+      : [])
+  ];
   
   useEffect(() => {
     const authDataString = localStorage.getItem('auth');
     if (authDataString) {
       try {
-        const authData = JSON.parse(authDataString);
-        console.log('Parsed auth data:', authData);
-        console.log('Username:', authData.user.username);
-        console.log('Token:', authData.token);
-        console.log('Is authenticated:', authData.isAuthenticated);
-        console.log('Last activity:', new Date(authData.lastActivity));
-        
+        const authData = JSON.parse(authDataString);  
       } catch (error) {
         console.error('Error parsing auth data:', error);
         localStorage.removeItem('auth');
@@ -348,7 +336,7 @@ const MainDashboard = () => {
       console.error('Failed to logout:', err);
     }
   };
-  
+
   const onMenuSelect = ({ key }) => {
     const selectedItem = menuItems.find(item => item.key === key);
     if (selectedItem?.path) {

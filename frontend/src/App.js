@@ -13,10 +13,11 @@ import ListMenu from './listManagement/listMenu';
 import { ToastContainer } from 'react-toastify';
 import InventryMenu from './inventoryManagement/inventoryMenu';
 import BudgetMenu from './budgetManagement/budgetMenu';
+import UserMenu from './userManagement/userMenu';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -87,6 +88,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <BudgetMenu />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/user-management/*"
+            element={
+              <ProtectedRoute>
+                <UserMenu />
               </ProtectedRoute>
             }
           />
