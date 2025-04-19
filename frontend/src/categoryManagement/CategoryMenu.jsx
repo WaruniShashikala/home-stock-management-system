@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import Report from './report';
-import ProductList from './productList';
-import Dashboard from './dashboard';
-import CategoryList from '../categoryManagement/CategoryList';
+import CategoryList from './CategoryList';
+import Dashboard from './Dashboard';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
   LogoutOutlined,
-  AppstoreAddOutlined,
+  SettingOutlined,
+  BellOutlined,
+  OrderedListOutlined,
   BarChartOutlined,
   AppstoreOutlined,
   PlusCircleOutlined
@@ -61,13 +61,10 @@ const DashboardView = () => (
 
 const menuItems = [
   { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
-  { key: '2', icon: <AppstoreAddOutlined />, label: 'Category', component: CategoryList},
-  { key: '3', icon: <PlusCircleOutlined />, label: 'Product List', component: ProductList },
-  { key: '4', icon: <BarChartOutlined />, label: 'Report', component: Report },
+  { key: '2', icon: <PlusCircleOutlined />, label: 'Food List', component: CategoryList },
 ];
 
-
-const InventryMenu = () => {
+const CategoryMenu = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState(['1']);
   const [openKeys, setOpenKeys] = useState(['sub1']);
@@ -106,9 +103,6 @@ const InventryMenu = () => {
       label: 'Profile',
       icon: <UserOutlined />,
       onClick: () => setIsProfileModalVisible(true)
-    },
-    {
-      type: 'divider'
     },
     {
       key: '3',
@@ -165,7 +159,7 @@ const InventryMenu = () => {
             backgroundColor: '#fff',
             marginLeft: '28px'
           }}>
-            {collapsed ? 'IV' : 'Inventory'}
+            {collapsed ? 'CT' : 'Category'}
           </div>
         </Link>
         <Menu
@@ -269,4 +263,4 @@ const InventryMenu = () => {
   );
 };
 
-export default InventryMenu;
+export default CategoryMenu;

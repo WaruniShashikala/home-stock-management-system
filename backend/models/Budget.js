@@ -25,6 +25,9 @@ const budgetSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: true
+    },
+    userId: {
+        type: String
     }
 }, {
     timestamps: true

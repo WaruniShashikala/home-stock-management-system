@@ -27,5 +27,7 @@ app.use("/api/waste", require("./routes/wasteRoutes"));
 app.use("/api/food", require("./routes/foodList"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/budgets", require("./routes/budgetRoutes"));
+app.use("/api/category", require("./routes/categoryRoutes"));
+app.use("/api/shoppinList", require("./routes/shoppingListRoutes"));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

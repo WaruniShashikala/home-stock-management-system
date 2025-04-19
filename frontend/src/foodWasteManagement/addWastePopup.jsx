@@ -18,6 +18,10 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useCreateWasteMutation, useUpdateWasteMutation } from '../services/wasteManagementApi';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { useGetAllCategoriesQuery } from '../services/categoryManagementApi';
+import {
+    useGetAllProductsQuery
+} from '../services/productManagementApi';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -28,6 +32,8 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
     const [createWaste] = useCreateWasteMutation();
     const [updateWaste] = useUpdateWasteMutation();
     const [uploading, setUploading] = useState(false); // State for upload loading
+    const { data: categories = [], isLoading: categoriesLoading } = useGetAllCategoriesQuery();
+    const { data: products = [], isLoading, isError, refetch } = useGetAllProductsQuery();
 
     useEffect(() => {
         if (initialValues) {
@@ -87,27 +93,23 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
-            const formData = new FormData();
 
-            // Append all form values to FormData
-            Object.entries(values).forEach(([key, value]) => {
-                if (value !== undefined && value !== null) {
-                    // Convert moment date to ISO string before sending
-                    if (key === 'date' && moment.isMoment(value)) {
-                        formData.append(key, value.toISOString());
-                    } else {
-                        formData.append(key, value);
-                    }
-                }
-            });
-
-            // Append photo URL to formData
-            if (fileList.length > 0) {
-                formData.append('imageUrl', fileList[0]?.url);
-            }
+            // Prepare the data in the exact format you want
+            const payload = {
+                itemName: values.itemName,
+                category: values.category,
+                quantity: values.quantity,
+                reason: values.reason,
+                date: values.date ? values.date.toISOString() : null,
+                ...(fileList.length > 0 && { imageUrl: fileList[0]?.url })
+            };
 
             if (initialValues) {
-                await updateWaste({ id: initialValues._id, formData }).unwrap();
+                // For update - spread the payload directly
+                await updateWaste({
+                    id: initialValues._id,
+                    ...payload  // Spread all properties at the top level
+                }).unwrap();
                 toast.success('Waste record updated successfully!', {
                     position: "top-right",
                     autoClose: 3000,
@@ -119,6 +121,14 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
                     theme: "dark"
                 });
             } else {
+                // For create, use FormData if needed
+                const formData = new FormData();
+                Object.entries(payload).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null) {
+                        formData.append(key, value);
+                    }
+                });
+
                 await createWaste(formData).unwrap();
                 toast.success('Waste record created successfully!', {
                     position: "top-right",
@@ -151,19 +161,6 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
         }
     };
 
-    const categoryOptions = [
-        'Fruits',
-        'Vegetables',
-        'Dairy',
-        'Bakery',
-        'Meat',
-        'Seafood',
-        'Grains',
-        'Snacks',
-        'Beverages',
-        'Leftovers',
-        'Other'
-    ];
 
     const reasonOptions = [
         'Expired',
@@ -210,7 +207,17 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
                     name="itemName"
                     rules={[{ required: true, message: 'Please input the food item!' }]}
                 >
-                    <Input readOnly={isView} placeholder="What food item was wasted?" size="large" />
+                    <Select placeholder="Select a item name" size="large">
+                        {products.map(product => (
+                            <Option
+                                disabled={isView}
+                                key={product._id}
+                                value={product.name}
+                            >
+                                {product.name}
+                            </Option>
+                        ))}
+                    </Select>
                 </Form.Item>
                 <Row gutter={12}>
                     <Col span={12}>
@@ -220,10 +227,17 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
                             rules={[{ required: true, message: 'Please select a category!' }]}
                         >
                             <Select placeholder="Select a category" size="large">
-                                {categoryOptions.map(category => (
-                                    <Option disabled={isView} key={category} value={category}>{category}</Option>
+                                {categories.map(category => (
+                                    <Option
+                                        key={category._id}
+                                        value={category.name}
+                                        disabled={category.status !== 'Active' || isView}
+                                    >
+                                        {category.name}
+                                    </Option>
                                 ))}
                             </Select>
+
                         </Form.Item>
                     </Col>
                     <Col span={12}>

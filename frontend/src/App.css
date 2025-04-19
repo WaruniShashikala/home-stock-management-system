@@ -5,3 +5,20 @@
   align-items: center;
   justify-content: center;
 }
+
+.ant-layout-sider, .ant-layout-header, .ant-menu, .logo{
+  background-color: rgb(37 3 47) !important;
+}
+
+.ant-menu-item, .logo{
+  color: rgb(255, 255, 255) !important;
+}
+
+.ant-menu-item-selected{
+  background-color: rgb(87, 37, 104) !important;
+}
+
+.ant-dropdown-trigger span{
+  color: rgb(255, 255, 255) !important;
+}
+

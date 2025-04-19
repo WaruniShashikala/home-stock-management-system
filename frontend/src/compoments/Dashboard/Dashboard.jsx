@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import WasteMenu from '../../foodWasteManagement/WasteMenu';
 import ListMenu from '../../listManagement/listMenu';
 import InventryMenu from '../../inventoryManagement/inventoryMenu';
+import CategoryMenu from '../../categoryManagement/CategoryMenu';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation, useUpdateProfileMutation } from '../../services/authApi';
@@ -238,11 +239,11 @@ const baseMenuItems = [
     component: DashboardView
   },
   {
-    key: '2',
-    icon: <DeleteOutlined />,
-    label: 'Waste Management',
-    component: WasteMenu,
-    path: '/waste-management'
+    key: '4',
+    icon: <ShoppingOutlined />,
+    label: 'Inventory Management',
+    component: InventryMenu,
+    path: '/inventory-management'
   },
   {
     key: '3',
@@ -252,18 +253,25 @@ const baseMenuItems = [
     path: '/list-management'
   },
   {
-    key: '4',
-    icon: <ShoppingOutlined />,
-    label: 'Inventory Management',
-    component: InventryMenu,
-    path: '/inventory-management'
-  },
-  {
     key: '8',
     icon: <DollarOutlined />,
     label: 'Budget',
     component: WasteMenu,
     path: '/budget-management'
+  },
+  // {
+  //   key: '9',
+  //   icon: <AppstoreAddOutlined />,
+  //   label: 'Category',
+  //   component: CategoryMenu,
+  //   path: '/category-management'
+  // },
+  {
+    key: '2',
+    icon: <DeleteOutlined />,
+    label: 'Waste Management',
+    component: WasteMenu,
+    path: '/waste-management'
   },
 ];
 

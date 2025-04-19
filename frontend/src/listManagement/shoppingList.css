@@ -1,0 +1,91 @@
+.shopping-list{
+    position: relative;
+}
+
+.shopping-header{
+    z-index: 10 !important;
+}
+
+.hide-on-print {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:-100;
+}
+
+.print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .print-table th,
+  .print-table td {
+    border-bottom: 1px solid #ccc;
+    padding: 3px;
+    text-align: left;
+  }
+  
+  .print-header {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .print-footer {
+    font-size: 11px;
+    text-align: right;
+    margin-top: 5px;
+  }
+  
+  .hide-on-print {
+    display: block;
+  }
+  
+
+@media print {
+    .hide-on-print {
+        display: none !important;
+    }
+}
+
+/* Hide elements from print view */
+@media print {
+    .hide-on-print {
+      display: none !important;
+    }
+  }
+  
+  /* Only apply styles when printing */
+  @media print {
+    .print-header {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 00px;
+    }
+  
+    .print-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+  
+    .print-table th,
+    .print-table td {
+      border: 1px solid #000;
+      padding: 2px;
+      text-align: left;
+      font-size: 11px;
+    }
+  
+    .print-table th {
+      background-color: #f0f0f0;
+    }
+  
+    .print-footer {
+      font-size: 12px;
+      text-align: right;
+      margin-top: 20px;
+    }
+  }
+  

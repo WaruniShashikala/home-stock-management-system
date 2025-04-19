@@ -5,7 +5,7 @@ const path = require('path');
 // Set up multer storage for image uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/images'); 
+        cb(null, './public/images');
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
@@ -22,6 +22,13 @@ exports.createWaste = async (req, res) => {
                 return res.status(400).json({ message: 'Error uploading file' });
             }
 
+            const userId = req.headers['x-user-id'];
+
+            if (!userId) {
+                return res.status(403).json({ message: "User ID is required" });
+            }
+
+
             const { itemName, category, quantity, reason, date } = req.body;
             const imageUrl = req.body.imageUrl ? req.body.imageUrl : null;
 
@@ -31,7 +38,8 @@ exports.createWaste = async (req, res) => {
                 quantity,
                 reason,
                 date,
-                imageUrl
+                imageUrl,
+                userId
             });
 
             const savedWaste = await newWaste.save();
@@ -45,7 +53,12 @@ exports.createWaste = async (req, res) => {
 // Get all waste records
 exports.getAllWastes = async (req, res) => {
     try {
-        const wastes = await Waste.find().sort({ createdAt: -1 });
+        const userId = req.headers['x-user-id'];
+        
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID is required in headers' });
+        }
+        const wastes = await Waste.find({userId: userId}).sort({ createdAt: -1 });
         res.status(200).json(wastes);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -74,6 +87,7 @@ exports.updateWaste = async (req, res) => {
             }
 
             const { itemName, category, quantity, reason, date } = req.body;
+            console.log(req.body)
             const updateData = {
                 itemName,
                 category,

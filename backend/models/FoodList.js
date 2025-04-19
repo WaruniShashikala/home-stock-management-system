@@ -26,6 +26,9 @@ const foodSchema = new mongoose.Schema({
         required: true,
         enum: ['kg', 'liter', 'packs', 'count'],
         default: 'count'
+    },
+    userId: {
+        type: String
     }
 }, {
     timestamps: true

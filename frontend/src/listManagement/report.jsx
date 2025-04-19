@@ -215,8 +215,8 @@ const Report = () => {
       
       {/* Summary Statistics */}
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
-        <Col xs={24} sm={8} md={6}>
-          <Card>
+        <Col xs={24} sm={8} md={8}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Total Food Items"
               value={totalItems}
@@ -224,8 +224,8 @@ const Report = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={8} md={6}>
-          <Card>
+        <Col xs={24} sm={8} md={8}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Total Quantity"
               value={totalQuantity}
@@ -233,8 +233,8 @@ const Report = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={8} md={6}>
-          <Card>
+        <Col xs={24} sm={8} md={8}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Low Stock Items"
               value={lowStockItems}
@@ -242,15 +242,15 @@ const Report = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={8} md={6}>
-          <Card>
+        {/* <Col xs={24} sm={8} md={6}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Expired Items"
               value={expiredItems}
               prefix={<WarningOutlined />}
             />
           </Card>
-        </Col>
+        </Col> */}
       </Row>
       
       {/* Main Report Content */}
@@ -258,7 +258,7 @@ const Report = () => {
         <>
           <Row gutter={[24, 24]}>
             <Col xs={24} md={12}>
-              <Card title={
+              <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} title={
                 <>
                   <PieChartOutlined style={{ marginRight: 8 }} />
                   Category Distribution
@@ -270,7 +270,7 @@ const Report = () => {
               </Card>
             </Col>
             <Col xs={24} md={12}>
-              <Card title={
+              <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} title={
                 <>
                   <BarChartOutlined style={{ marginRight: 8 }} />
                   Stock Status
@@ -283,7 +283,7 @@ const Report = () => {
             </Col>
           </Row>
           
-          <Card title="Low Stock Items" style={{ marginTop: 24 }}>
+          <Card title="Low Stock Items" style={{ marginTop: '24px', background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Table
               columns={lowStockColumns}
               dataSource={lowStockItemsData}
@@ -296,7 +296,7 @@ const Report = () => {
       )}
       
       {reportType === 'stock' && (
-        <Card title="Detailed Stock Analysis">
+        <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} title="Detailed Stock Analysis">
           <div style={{ height: 400 }}>
             <Bar 
               data={stockChartData} 
@@ -315,14 +315,14 @@ const Report = () => {
       {reportType === 'expiry' && (
         <Row gutter={[24, 24]}>
           <Col xs={24} md={12}>
-            <Card title="Expiry Status">
+            <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} title="Expiry Status">
               <div style={{ height: 300 }}>
                 <Pie data={expiryChartData} options={{ responsive: true }} />
               </div>
             </Card>
           </Col>
           <Col xs={24} md={12}>
-            <Card title="Expiry Insights">
+            <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} title="Expiry Insights">
               <div style={{ lineHeight: '32px' }}>
                 <Text strong>Items expiring in next 7 days:</Text> {expiryData[1].count}
                 <br />

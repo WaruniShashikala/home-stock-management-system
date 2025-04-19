@@ -4,7 +4,11 @@ const Product = require('../models/Product');
 exports.createProduct = async (req, res) => {
     try {
         const { name, category, quantity, price, manufactureDate, expiryDate, image } = req.body;
-        
+        const userId = req.headers['x-user-id'];
+
+        if (!userId) {
+            return res.status(403).json({ message: "User ID is required" });
+        }
         const newProduct = new Product({
             name,
             category,
@@ -12,7 +16,8 @@ exports.createProduct = async (req, res) => {
             price,
             manufactureDate, // Stored as string
             expiryDate,     // Stored as string
-            image
+            image,
+            userId
         });
 
         const savedProduct = await newProduct.save();
@@ -28,8 +33,15 @@ exports.createProduct = async (req, res) => {
 // Get all products (with string dates)
 exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().sort({ createdAt: -1 });
+        const userId = req.headers['x-user-id'];
         
+        if (!userId) {
+            return res.status(400).json({ 
+                message: 'User ID is required in headers' 
+            });
+        }
+
+        const products = await Product.find({ userId: userId }).sort({ createdAt: -1 });
         // Format dates as strings in response
         const formattedProducts = products.map(product => ({
             ...product._doc,

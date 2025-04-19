@@ -5,6 +5,8 @@ import { productManagementApi } from '../services/productManagementApi';
 import { budgetManagementApi } from '../services/budgetManagementApi';
 import { authApi } from '../services/authApi';
 import authReducer from '../slice/authSlice'; 
+import { categoryApi } from '../services/categoryManagementApi';
+import { shoppingListApi } from '../services/shoppingListManagementApi';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ export const store = configureStore({
     [foodApi.reducerPath]: foodApi.reducer, 
     [productManagementApi.reducerPath]: productManagementApi.reducer,
     [budgetManagementApi.reducerPath]: budgetManagementApi.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
+    [shoppingListApi.reducerPath]: shoppingListApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -21,5 +25,7 @@ export const store = configureStore({
       .concat(wasteManagementApi.middleware)
       .concat(foodApi.middleware)
       .concat(productManagementApi.middleware)
-      .concat(budgetManagementApi.middleware), 
+      .concat(budgetManagementApi.middleware)
+      .concat(categoryApi.middleware)
+      .concat(shoppingListApi.middleware),
 });

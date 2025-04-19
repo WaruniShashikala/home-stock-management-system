@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify';
 import InventryMenu from './inventoryManagement/inventoryMenu';
 import BudgetMenu from './budgetManagement/budgetMenu';
 import UserMenu from './userManagement/userMenu';
+import CategoryMenu from './categoryManagement/CategoryMenu';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -97,6 +98,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <UserMenu />
+              </ProtectedRoute>
+            }
+          />
+
+<Route
+            path="/category-management/*"
+            element={
+              <ProtectedRoute>
+                <CategoryMenu />
               </ProtectedRoute>
             }
           />

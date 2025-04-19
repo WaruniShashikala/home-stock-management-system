@@ -10,9 +10,8 @@ const productSchema = new mongoose.Schema({
         required: true,
     },
     quantity: {
-        type: Number,
+        type: String,
         required: true,
-        min: 0
     },
     price: {
         type: Number,
@@ -27,6 +26,9 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: String 
+    },
+    userId: {
+        type: String
     }
 }, {
     timestamps: true
