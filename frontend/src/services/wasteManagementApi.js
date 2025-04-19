@@ -5,12 +5,28 @@ export const wasteManagementApi = createApi({
   baseQuery: fetchBaseQuery({ 
     baseUrl: 'http://localhost:5000/api',
     prepareHeaders: (headers) => {
-      // If you need to add auth headers or others
-      headers.set('Accept', 'application/json');
+      const authDataString = localStorage.getItem('auth');
+      if (authDataString) {
+        try {
+          const authData = JSON.parse(authDataString);
+          const userId = authData?.user?._id;
+          headers.set('Accept', 'application/json');
+          // Don't set Content-Type here - it will be set automatically based on the body
+          if (userId) {
+            headers.set('X-user-id', userId); // Standard header format (lowercase)
+          }
+          const token = authData?.token;
+          if (token) {
+            headers.set('Authorization', `Bearer ${token}`);
+          }
+        } catch (error) {
+          console.error('Failed to parse auth data from localStorage', error);
+        }
+      }
       return headers;
     }
   }),
-  tagTypes: ['Waste'], // For cache invalidation
+  tagTypes: ['Waste'],
   endpoints: (builder) => ({
     // Get All Waste Data
     getAllWaste: builder.query({
@@ -24,28 +40,32 @@ export const wasteManagementApi = createApi({
       providesTags: (result, error, id) => [{ type: 'Waste', id }]
     }),
 
-    // Create New Waste Item (with file upload support)
+    // Create New Waste Item (supports both JSON and FormData)
     createWaste: builder.mutation({
-      query: (formData) => ({
-        url: '/waste',
-        method: 'POST',
-        body: formData,
-        headers: {
-        },
-      }),
+      query: (data) => {
+        const isFormData = data instanceof FormData;
+        return {
+          url: '/waste',
+          method: 'POST',
+          body: data,
+          // Don't set Content-Type for FormData - browser will handle it
+          headers: isFormData ? {} : { 'Content-Type': 'application/json' }
+        };
+      },
       invalidatesTags: ['Waste']
     }),
 
-    // Update Waste Item (with file upload support)
+    // Update Waste Item (supports both JSON and FormData)
     updateWaste: builder.mutation({
-      query: ({ id, formData }) => ({
-        url: `/waste/${id}`,
-        method: 'PUT',
-        body: formData,
-        headers: {
-          // No Content-Type header for FormData
-        },
-      }),
+      query: ({ id, ...data }) => {
+        const isFormData = data instanceof FormData;
+        return {
+          url: `/waste/${id}`,
+          method: 'PUT',
+          body: data,
+        
+        };
+      },
       invalidatesTags: (result, error, { id }) => [{ type: 'Waste', id }]
     }),
 
@@ -54,6 +74,9 @@ export const wasteManagementApi = createApi({
       query: (id) => ({
         url: `/waste/${id}`,
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }),
       invalidatesTags: ['Waste']
     }),

@@ -5,12 +5,19 @@ exports.createFood = async (req, res) => {
     try {
         const { name, quantity, usageQuantity, restockQuantity, unit } = req.body;
         
+        const userId = req.headers['x-user-id'];
+
+        if (!userId) {
+            return res.status(403).json({ message: "User ID is required" });
+        }
+        
         const newFood = new Food({
             name,
             quantity,
             usageQuantity,
             restockQuantity,
-            unit
+            unit,
+            userId
         });
 
         const savedFood = await newFood.save();
@@ -21,12 +28,18 @@ exports.createFood = async (req, res) => {
 };
 
 // Get all food items
-exports.getAllFoods = async (req, res) => {
+exports.getAllFoods =  async (req, res) => {
     try {
-        const foods = await Food.find().sort({ createdAt: -1 });
-        res.status(200).json(foods);
+        const userId = req.headers['x-user-id'];
+        
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID is required in headers' });
+        }
+
+        const foods = await Food.find({ userId: userId });
+        res.json(foods);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 

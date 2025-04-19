@@ -49,15 +49,38 @@ const ProductList = () => {
         setSearchText(e.target.value.toLowerCase());
     };
 
+    const parseQuantity = (quantityString) => {
+        if (!quantityString) return { quantity: '', unit: 'count' };
+        const str = quantityString.toString().trim();
+        const parts = str.split(' ');
+        if (parts.length === 1) {
+            return {
+                quantity: parseFloat(parts[0]) || 0,
+                unit: 'count'
+            };
+        }
+
+        const unit = parts.pop();
+        const quantity = parseFloat(parts.join(' ')) || 0;
+
+        return { quantity, unit };
+    };
+
     const handleView = (record) => {
-        setIsView(true)
+        setIsView(true);
         setEditingRecord(record);
+        const { quantity, unit } = parseQuantity(record.quantity);
+
         const formValues = {
             ...record,
+            quantity: quantity,
+            unit: unit || 'count',
             manufactureDate: record?.manufactureDate ? moment(record.manufactureDate) : null,
             expiryDate: record?.expiryDate ? moment(record.expiryDate) : null
         };
+
         form.setFieldsValue(formValues);
+
         if (record.image) {
             setFileList([{
                 uid: '-1',
@@ -73,10 +96,12 @@ const ProductList = () => {
 
     const handleEdit = (record) => {
         setEditingRecord(record);
+        const { quantity, unit } = parseQuantity(record.quantity); // Make sure this matches your API response field name
 
         const formValues = {
             ...record,
-            // Initialize dates properly
+            quantity: quantity,
+            unit: unit || 'count', // Default to 'count' if unit is not specified
             manufactureDate: record?.manufactureDate ? moment(record.manufactureDate) : null,
             expiryDate: record?.expiryDate ? moment(record.expiryDate) : null
         };
@@ -95,6 +120,7 @@ const ProductList = () => {
         }
 
         setIsModalVisible(true);
+        setIsView(false);
     };
 
     const handleDelete = async (record) => {
@@ -145,7 +171,8 @@ const ProductList = () => {
                 expiryDate: values.expiryDate && moment.isMoment(values.expiryDate)
                     ? values.expiryDate.format('YYYY-MM-DD')
                     : values.expiryDate,
-                image: fileList[0]?.url || ''
+                image: fileList[0]?.url || '',
+                quantity: `${values.quantity} ${values.unit}`
             };
 
             if (editingRecord) {
@@ -219,7 +246,7 @@ const ProductList = () => {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
-            render: (text) => `$${text.toFixed(2)}`
+            render: (text) => `Rs: ${text.toFixed(2)}`
         },
         {
             title: 'Manufacture Date',

@@ -9,11 +9,14 @@ import {
     Upload,
     Spin,
     message,
-    Button
+    Button,
+    Radio,
+    Space
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import axios from 'axios';
+import { useGetAllCategoriesQuery } from '../services/categoryManagementApi';
 
 const { Option } = Select;
 
@@ -31,6 +34,9 @@ const ProductFormModal = ({
     onFinish,
     isView
 }) => {
+    // Fetch categories from API
+    const { data: categories = [], isLoading: categoriesLoading } = useGetAllCategoriesQuery();
+
     const handleUploadChange = async ({ fileList: newFileList }) => {
         if (!isView && newFileList.length > 0) {
             const file = newFileList[0].originFileObj;
@@ -66,7 +72,7 @@ const ProductFormModal = ({
         <Modal
             title={isView ? 'View Product' : (editingRecord ? 'Edit Product' : 'Add New Product')}
             visible={visible}
-            onOk={isView ? null : onOk}  // Disable OK button in view mode
+            onOk={isView ? null : onOk}
             onCancel={onCancel}
             okText={editingRecord ? "Edit Product" : "Add New Product"}
             cancelText="Cancel"
@@ -74,7 +80,7 @@ const ProductFormModal = ({
             className="product-form-modal"
             bodyStyle={{ padding: '24px 24px 0' }}
             width={700}
-            footer={isView ? null : [ // Hide footer buttons in view mode
+            footer={isView ? null : [
                 <Button key="back" onClick={onCancel}>
                     Cancel
                 </Button>,
@@ -102,17 +108,41 @@ const ProductFormModal = ({
                     name="category"
                     rules={[{ required: true, message: 'Please select a category!' }]}
                 >
-                    <Select placeholder="Select category" disabled={isView}>
-                        <Option value="Electronics">Electronics</Option>
-                        <Option value="Clothing">Clothing</Option>
-                        <Option value="Food">Food</Option>
-                        <Option value="Beverages">Beverages</Option>
-                        <Option value="Home & Garden">Home & Garden</Option>
-                        <Option value="Health & Beauty">Health & Beauty</Option>
-                        <Option value="Sports">Sports</Option>
-                        <Option value="Other">Other</Option>
+                    <Select
+                        placeholder="Select category"
+                        disabled={isView || categoriesLoading}
+                        loading={categoriesLoading}
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                    >
+                        {categories.map(category => (
+                            <Option
+                                key={category._id}
+                                value={category.name}
+                                disabled={category.status !== 'Active'}
+                            >
+                                {category.name}
+                            </Option>
+                        ))}
                     </Select>
                 </Form.Item>
+
+                <Form.Item
+                    label="Unit of Quantity"
+                    name="unit"
+                    rules={[{ required: true, message: 'Please select a unit!' }]}
+                >
+                    <Radio.Group disabled={isView}>
+                        <Radio.Button value="count">Count</Radio.Button>
+                        <Radio.Button value="kg">Kilogram (kg)</Radio.Button>
+                        <Radio.Button value="liter">Liter (l)</Radio.Button>
+                        <Radio.Button value="packs">Packs</Radio.Button>
+                    </Radio.Group>
+                </Form.Item>
+
 
                 <Form.Item
                     label="Quantity"
@@ -128,7 +158,7 @@ const ProductFormModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Price ($)"
+                    label="Price of 1 unit (Rs)"
                     name="price"
                     rules={[{
                         required: true,
@@ -151,7 +181,7 @@ const ProductFormModal = ({
                         onChange={(date) => {
                             const expiryDate = form.getFieldValue('expiryDate');
                             if (expiryDate && date && expiryDate.isBefore(date)) {
-                                form.setFieldsValue({ expiryDate: null }); // Reset expiry if it's invalid
+                                form.setFieldsValue({ expiryDate: null });
                             }
                         }}
                         disabled={isView}
@@ -184,7 +214,7 @@ const ProductFormModal = ({
                         disabled={isView}
                         showUploadList={{
                             showPreviewIcon: true,
-                            showRemoveIcon: false
+                            showRemoveIcon: true
                         }}
                     >
                         {fileList.length >= 1 || isView ? null : (

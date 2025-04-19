@@ -8,19 +8,6 @@ const wasteSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: [
-            'Fruits',
-            'Vegetables',
-            'Dairy',
-            'Bakery',
-            'Meat',
-            'Seafood',
-            'Grains',
-            'Snacks',
-            'Beverages',
-            'Leftovers',
-            'Other'
-        ]        
     },
     quantity: {
         type: String,
@@ -28,18 +15,7 @@ const wasteSchema = new mongoose.Schema({
     },
     reason: {
         type: String,
-        required: true,
-        enum: [
-            'Expired',
-            'Spoiled',
-            'Moldy',
-            'Freezer Burn',
-            'Overcooked',
-            'Didnt Like',
-            'Too Much Prepared',
-            'Forgot About It',
-            'Other'
-        ]
+        required: true
     },
     date: {
         type: String,
@@ -51,6 +27,9 @@ const wasteSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    userId: {
+        type: String,
     }
 });
 

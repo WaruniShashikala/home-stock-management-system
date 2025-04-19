@@ -89,8 +89,8 @@ const Dashboard = () => {
       
       {/* Key Metrics */}
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
-        <Col xs={24} sm={12} md={6}>
-          <Card>
+        <Col xs={24} sm={12} md={8}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Total Items"
               value={totalItems}
@@ -98,8 +98,8 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={6}>
-          <Card>
+        <Col xs={24} sm={12} md={8}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Total Quantity"
               value={totalQuantity}
@@ -107,8 +107,8 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={6}>
-          <Card>
+        <Col xs={24} sm={12} md={8}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Low Stock"
               value={lowStockItems}
@@ -116,21 +116,21 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={6}>
-          <Card>
+        {/* <Col xs={24} sm={12} md={6}>
+          <Card style={{ background: 'rgb(224 235 255)', borderRadius: 12, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <Statistic
               title="Expired"
               value={expiredItems}
               prefix={<WarningOutlined />}
             />
           </Card>
-        </Col>
+        </Col> */}
       </Row>
       
       {/* Inventory Overview */}
       <Row gutter={[24, 24]} style={{ marginBottom: 24 }}>
         <Col xs={24} md={12}>
-          <Card title="Stock Status">
+          <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} title="Stock Status">
             <Progress
               percent={Math.round(((totalItems - lowStockItems) / totalItems) * 100)}
               status="active"
@@ -147,7 +147,7 @@ const Dashboard = () => {
           </Card>
         </Col>
         <Col xs={24} md={12}>
-          <Card title="Categories">
+          <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} title="Categories">
             <div style={{ height: 200 }}>
               <Pie 
                 data={categoryChartData} 
@@ -168,7 +168,7 @@ const Dashboard = () => {
       {/* Low Stock Items */}
       <Card 
         title={<><WarningOutlined /> Items Needing Restock</>}
-        style={{ marginBottom: 24 }}
+        style={{ marginBottom: 24 ,background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
       >
         <Table
           columns={lowStockColumns}
@@ -184,7 +184,7 @@ const Dashboard = () => {
       <Card title="Expiry Status">
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={8}>
-            <Card size="small">
+            <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} size="small">
               <Statistic
                 title="Expired Items"
                 value={expiredItems}
@@ -193,7 +193,7 @@ const Dashboard = () => {
             </Card>
           </Col>
           <Col xs={24} sm={8}>
-            <Card size="small">
+            <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} size="small">
               <Statistic
                 title="Expiring Soon"
                 value={foods.filter(item => 
@@ -206,7 +206,7 @@ const Dashboard = () => {
             </Card>
           </Col>
           <Col xs={24} sm={8}>
-            <Card size="small">
+            <Card style={{ background: 'rgb(255 255 255)', borderRadius: 12,   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} size="small">
               <Statistic
                 title="Valid Items"
                 value={foods.filter(item => 
