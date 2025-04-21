@@ -173,7 +173,7 @@ const ProductFormModal = ({
                 <Form.Item
                     label="Manufacture Date"
                     name="manufactureDate"
-                    rules={[{ required: true, message: 'Please select manufacture date!' }]}
+                    //rules={[{ required: true, message: 'Please select manufacture date!' }]}
                 >
                     <DatePicker
                         style={{ width: '100%' }}
@@ -191,7 +191,7 @@ const ProductFormModal = ({
                 <Form.Item
                     label="Expiry Date"
                     name="expiryDate"
-                    rules={[{ required: true, message: 'Please select expiry date!' }]}
+                //    rules={[{ required: true, message: 'Please select expiry date!' }]}
                 >
                     <DatePicker
                         style={{ width: '100%' }}
