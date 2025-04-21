@@ -173,7 +173,7 @@ const WasteList = () => {
         <Divider />
 
         <div style={{
-          maxHeight: 'calc(100vh - 300px)',
+          maxHeight: 'calc(100vh - 100px)',
           overflowY: 'auto',
           paddingRight: '8px'
         }}>
@@ -187,7 +187,8 @@ const WasteList = () => {
                   marginBottom: '16px',
                   borderRadius: '12px',
                   transition: 'transform 0.5s ease-in-out',
-                  margin: '10px'
+                  margin: '10px',
+                  backgroundColor: 'rgb(238 238 246)',
                 }}
                 bodyStyle={{ padding: '16px' }}
               >
@@ -195,7 +196,7 @@ const WasteList = () => {
                   <div style={{
                     width: '64px',
                     height: '64px',
-                    backgroundColor: '#f0f0f0',
+                  
                     borderRadius: '8px',
                     overflow: 'hidden',
                     boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)'
