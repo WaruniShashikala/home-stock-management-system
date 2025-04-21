@@ -11,6 +11,7 @@ import {
     Button
 } from 'antd';
 import moment from 'moment';
+import { useGetAllCategoriesQuery } from '../services/categoryManagementApi';
 
 const { Option } = Select;
 
@@ -24,6 +25,10 @@ const BudgetFormModal = ({
     onFinish,
     isView
 }) => {
+
+    const { data: categories = [], isLoading: categoriesLoading } = useGetAllCategoriesQuery();
+
+
     return (
         <Modal
             title={isView ? 'View Budget' : (editingRecord ? 'Edit Budget' : 'Add New Budget')}
@@ -64,19 +69,25 @@ const BudgetFormModal = ({
                     name="category"
                     rules={[{ required: true, message: 'Please select a category!' }]}
                 >
-                    <Select placeholder="Select category" disabled={isView}>
-                        <Option value="Household">Household</Option>
-                        <Option value="Business">Business</Option>
-                        <Option value="Personal">Personal</Option>
-                        <Option value="Education">Education</Option>
-                        <Option value="Travel">Travel</Option>
-                        <Option value="Savings">Savings</Option>
-                        <Option value="Other">Other</Option>
+                    <Select
+                        placeholder="Select a category"
+                        size="large"
+                        loading={categoriesLoading}
+                    >
+                        {categories.map(category => (
+                            <Option
+                                key={category._id}
+                                value={category.name}
+                                disabled={category.status !== 'Active' || isView}
+                            >
+                                {category.name}
+                            </Option>
+                        ))}
                     </Select>
                 </Form.Item>
 
                 <Form.Item
-                    label="Total Amount ($)"
+                    label="Total Amount (Rs)"
                     name="totalAmount"
                     rules={[{
                         required: true,

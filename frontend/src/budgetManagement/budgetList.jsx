@@ -166,7 +166,7 @@ const BudgetList = () => {
             title: 'Total Amount',
             dataIndex: 'totalAmount',
             key: 'totalAmount',
-            render: (text) => `$${text.toFixed(2)}`
+            render: (text) => `Rs.${text.toFixed(2)}`
         },
         {
             title: 'Start Date',

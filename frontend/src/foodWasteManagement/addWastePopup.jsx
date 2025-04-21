@@ -20,9 +20,7 @@ import { useCreateWasteMutation, useUpdateWasteMutation } from '../services/wast
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useGetAllCategoriesQuery } from '../services/categoryManagementApi';
-import {
-    useGetAllProductsQuery
-} from '../services/productManagementApi';
+import { useGetAllProductsQuery } from '../services/productManagementApi';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
