@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Input, Space, Typography, message, Tooltip, Modal, InputNumber, Form, Radio, Spin } from 'antd';
+import { Table, Button, Input, Space, Typography, message, Tooltip, Modal, InputNumber, Form, Radio, Spin, Select } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, FileAddOutlined } from '@ant-design/icons';
 import './FoodList.css';
 import {
@@ -11,8 +11,10 @@ import {
 } from '../services/foodManagementApi';
 import { useGetAllListItemsQuery, useCreateListItemMutation } from '../services/shoppingListManagementApi';
 import { ToastContainer, toast } from 'react-toastify';
+import { useGetAllCategoriesQuery } from '../services/categoryManagementApi';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
+const { Option } = Select;
 
 const FoodList = () => {
     const [searchText, setSearchText] = useState('');
@@ -29,6 +31,7 @@ const FoodList = () => {
     const [updateFood] = useUpdateFoodMutation();
     const [deleteFood] = useDeleteFoodMutation();
     const [createListItem] = useCreateListItemMutation();
+    const { data: categories = [], isLoading: categoriesLoading } = useGetAllCategoriesQuery();
     const handleSearch = (e) => {
         setSearchText(e.target.value.toLowerCase());
     };
@@ -172,6 +175,11 @@ const FoodList = () => {
     const columns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
         {
+            title: 'Category',
+            dataIndex: 'category',
+            key: 'category',
+        },
+        {
             title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
@@ -225,7 +233,7 @@ const FoodList = () => {
     return (
         <div className="food-list-container">
             <div className="header">
-                <Title level={3} style={{ color: '#5e3ea1' }}>Food List</Title>
+                <Title level={3} style={{ color: '#5e3ea1' }}>Items List</Title>
                 <Space>
                     <Input
                         placeholder="Search Food..."
@@ -278,6 +286,28 @@ const FoodList = () => {
                         rules={[{ required: true, message: 'Please input the food name!' }]}
                     >
                         <Input placeholder="Enter food name" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Category"
+                        name="category"
+                        rules={[{ required: true, message: 'Please select a category!' }]}
+                    >
+                        <Select
+                            placeholder="Select a category"
+                            
+                            loading={categoriesLoading}
+                        >
+                            {categories.map(category => (
+                                <Option
+                                    key={category._id}
+                                    value={category.name}
+                                    disabled={category.status !== 'Active'}
+                                >
+                                    {category.name}
+                                </Option>
+                            ))}
+                        </Select>
                     </Form.Item>
 
                     <Form.Item

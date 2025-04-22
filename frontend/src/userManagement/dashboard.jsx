@@ -144,15 +144,16 @@ function Dashboard() {
         <Col span={24}>
           <Card title="User Role Distribution">
             <Row>
-              <Col xs={24} md={12}>
+              {/* <Col  xs={24} md={12}>
                 <PieChart 
+                style={{width:'100px', height: '100px'}}
                   data={[
                     { name: 'Admins', value: userStats.adminCount },
                     { name: 'Users', value: userStats.totalUsers - userStats.adminCount },
                   ]}
                   colors={['#ff4d4f', '#1890ff']}
                 />
-              </Col>
+              </Col> */}
               <Col xs={24} md={12}>
                 <Space direction="vertical" style={{ padding: '20px' }}>
                   <Statistic

@@ -3,7 +3,7 @@ const Food = require('../models/FoodList');
 // Create a new food item
 exports.createFood = async (req, res) => {
     try {
-        const { name, quantity, usageQuantity, restockQuantity, unit } = req.body;
+        const { name, quantity, category, usageQuantity, restockQuantity, unit } = req.body;
         
         const userId = req.headers['x-user-id'];
 
@@ -14,10 +14,11 @@ exports.createFood = async (req, res) => {
         const newFood = new Food({
             name,
             quantity,
+            category,
             usageQuantity,
             restockQuantity,
             unit,
-            userId
+            userId,
         });
 
         const savedFood = await newFood.save();
@@ -59,13 +60,14 @@ exports.getFoodById = async (req, res) => {
 // Update a food item
 exports.updateFood = async (req, res) => {
     try {
-        const { name, quantity, usageQuantity, restockQuantity, unit } = req.body;
+        const { name, quantity, category, usageQuantity, restockQuantity, unit } = req.body;
         
         const updatedFood = await Food.findByIdAndUpdate(
             req.params.id,
             {
                 name,
                 quantity,
+                category,
                 usageQuantity,
                 restockQuantity,
                 unit
