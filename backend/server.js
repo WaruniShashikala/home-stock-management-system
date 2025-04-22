@@ -29,5 +29,6 @@ app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/budgets", require("./routes/budgetRoutes"));
 app.use("/api/category", require("./routes/categoryRoutes"));
 app.use("/api/shoppinList", require("./routes/shoppingListRoutes"));
+app.use("/api/chatbot", require("./routes/chatbotRoutes"));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

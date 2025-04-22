@@ -11,6 +11,10 @@ const foodSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
+    category: {
+        type: String,
+        required: true
+    },
     usageQuantity: {
         type: Number,
         required: true,

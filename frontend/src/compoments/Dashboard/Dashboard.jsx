@@ -153,7 +153,7 @@ const DashboardView = ({ navigate }) => {
           </Col>
         ))}
       </Row>
-
+{/* 
       <Row gutter={[24, 24]}>
         <Col xs={24} md={12}>
           <Card
@@ -226,7 +226,7 @@ const DashboardView = ({ navigate }) => {
             </Row>
           </Card>
         </Col>
-      </Row>
+      </Row> */}
     </div>
   );
 };
