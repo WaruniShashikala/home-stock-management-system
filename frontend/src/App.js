@@ -15,6 +15,7 @@ import InventryMenu from './inventoryManagement/inventoryMenu';
 import BudgetMenu from './budgetManagement/budgetMenu';
 import UserMenu from './userManagement/userMenu';
 import CategoryMenu from './categoryManagement/CategoryMenu';
+import VoiceControl from './VoiceControl';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -28,6 +29,7 @@ const ProtectedRoute = ({ children }) => {
 function App() {
 
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     // Check for existing auth data in localStorage
@@ -45,6 +47,7 @@ function App() {
     <Router>
       <div className="App">
         <ToastContainer />
+        {isAuthenticated && <VoiceControl />}
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
@@ -102,7 +105,7 @@ function App() {
             }
           />
 
-<Route
+          <Route
             path="/category-management/*"
             element={
               <ProtectedRoute>

@@ -8,7 +8,7 @@ const LandingPage = () => {
       <header>
         <div class="container">
             <nav>
-                <div class="logom">
+                <div class="menu-logo-landing">
                     <i class="fas fa-boxes"></i>
                     <span>HomeStock</span>
                 </div>
