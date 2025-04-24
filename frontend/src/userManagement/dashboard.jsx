@@ -164,6 +164,7 @@ function Dashboard() {
                   <Progress
                     percent={(userStats.adminCount / userStats.totalUsers * 100)}
                     strokeColor="#ff4d4f"
+                    showInfo={false}
                   />
                   <Text type="secondary">
                     {userStats.adminCount} admin users out of {userStats.totalUsers} total users
