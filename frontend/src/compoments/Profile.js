@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Modal, Form, Input, Button, Upload, message, Avatar, Spin, Typography } from 'antd';
 import { UserOutlined, UploadOutlined, LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, updateUser } from '../slice/authSlice';
 
 const Profile = ({ user, visible, onCancel, onUpdate, updateProfile }) => {
   const [form] = Form.useForm();
@@ -9,7 +11,7 @@ const Profile = ({ user, visible, onCancel, onUpdate, updateProfile }) => {
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const dispatch = useDispatch();
   const { Text } = Typography;
 
   useEffect(() => {
@@ -67,8 +69,8 @@ const Profile = ({ user, visible, onCancel, onUpdate, updateProfile }) => {
         profilePicture: imageUrl
       };
 
-      await updateProfile(updateData).unwrap();
-
+      const response = await updateProfile(updateData).unwrap();
+      dispatch(updateUser(response));
       message.success('Profile updated successfully!');
       onUpdate();
       onCancel();

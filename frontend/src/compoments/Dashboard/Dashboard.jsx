@@ -73,6 +73,7 @@ const DashboardCard = ({ icon, title, description, onClick, color }) => {
 // Components for different views
 const DashboardView = ({ navigate }) => {
   const { token } = theme.useToken();
+  const user = useSelector(selectCurrentUser);
 
   const dashboardCards = [
     {
@@ -95,13 +96,6 @@ const DashboardView = ({ navigate }) => {
       path: '/inventory-management',
       description: 'Track your food inventory',
       color: '#faad14'
-    },
-    {
-      title: 'User Management',
-      icon: <TeamOutlined />,
-      path: '/user-management',
-      description: 'Manage system users',
-      color: '#f5222d'
     },
     {
       title: 'Shopping List',
@@ -130,7 +124,14 @@ const DashboardView = ({ navigate }) => {
       path: '/reports',
       description: 'View analytics',
       color: '#1890ff'
-    }
+    },
+    ...(user?.role === 'admin' ? [{
+      title: 'User Management',
+      icon: <TeamOutlined />,
+      path: '/user-management',
+      description: 'Manage system users',
+      color: '#f5222d'
+    }] : [])
   ];
 
   return (

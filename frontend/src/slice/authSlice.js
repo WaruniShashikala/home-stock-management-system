@@ -67,19 +67,29 @@ const authSlice = createSlice({
       state.error = null;
     },
     updateUser: (state, action) => {
-      console.log('Updating user in Redux:', action.payload);
       if (state.user) {
-        state.user = { ...state.user, ...action.payload };
-        console.log('New user state:', state.user);
+        // Merge the existing user with the updated fields
+        state.user = {
+          ...state.user,
+          ...action.payload,
+          // Ensure these critical fields aren't overwritten if not provided
+          id: action.payload.id || state.user.id,
+          role: action.payload.role || state.user.role
+        };
 
+        // Update localStorage
         if (typeof window !== 'undefined') {
           const storedAuth = localStorage.getItem('auth');
           if (storedAuth) {
-            const authData = JSON.parse(storedAuth);
-            localStorage.setItem('auth', JSON.stringify({
-              ...authData,
-              user: { ...authData.user, ...action.payload }
-            }));
+            try {
+              const authData = JSON.parse(storedAuth);
+              localStorage.setItem('auth', JSON.stringify({
+                ...authData,
+                user: state.user
+              }));
+            } catch (error) {
+              console.error('Error updating localStorage:', error);
+            }
           }
         }
       }

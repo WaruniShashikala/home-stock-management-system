@@ -91,13 +91,13 @@ const InventryMenu = () => {
 
   // Handle profile update
   const handleProfileUpdate = async (updatedData) => {
-    try {
-      const response = await updateProfile(updatedData).unwrap();
-      dispatch(updateUser(response.user));
-      setIsProfileModalVisible(false);
-    } catch (err) {
-      console.error('Failed to update profile:', err);
-    }
+    // try {
+    //   const response = await updateProfile(updatedData).unwrap();
+    //   dispatch(updateUser(response.user));
+    //   setIsProfileModalVisible(false);
+    // } catch (err) {
+    //   console.error('Failed to update profile:', err);
+    // }
   };
 
   const userMenuItems = [
