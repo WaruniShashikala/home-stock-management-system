@@ -84,7 +84,7 @@ const DashboardView = ({ navigate }) => {
       color: token.colorPrimary
     },
     {
-      title: 'List Management',
+      title: 'Items Management',
       icon: <OrderedListOutlined />,
       path: '/list-management',
       description: 'Manage your shopping lists',
@@ -249,7 +249,7 @@ const baseMenuItems = [
   {
     key: '3',
     icon: <OrderedListOutlined />,
-    label: 'List Management',
+    label: 'Items Management',
     component: ListMenu,
     path: '/list-management'
   },

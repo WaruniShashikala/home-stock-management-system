@@ -63,7 +63,7 @@ const DashboardView = () => (
 
 const menuItems = [
   { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
-  { key: '2', icon: <PlusCircleOutlined />, label: 'Food List', component: FoodList },
+  { key: '2', icon: <PlusCircleOutlined />, label: 'Items List', component: FoodList },
   { key: '3', icon: <OrderedListOutlined />, label: 'Shopping List', component: ShoppingList },
   { key: '4', icon: <BarChartOutlined />, label: 'Report', component: Report },
 ];

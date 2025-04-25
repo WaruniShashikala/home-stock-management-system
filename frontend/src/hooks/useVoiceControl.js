@@ -21,7 +21,7 @@ export const useVoiceControl = () => {
             callback: () => navigate('/waste-management')
         },
         {
-            command: 'open list management',
+            command: 'open items management',
             callback: () => navigate('/list-management')
         },
         {
@@ -33,7 +33,7 @@ export const useVoiceControl = () => {
             callback: () => navigate('/budget-management')
         },
         {
-            command: 'user management',
+            command: 'open user management',
             callback: () => navigate('/user-management')
         },
         {
@@ -57,7 +57,7 @@ export const useVoiceControl = () => {
             callback: () => navigate('/login')
         },
         {
-            command: 'go to signup',
+            command: 'go to sign up',
             callback: () => navigate('/signup')
         },
         {
