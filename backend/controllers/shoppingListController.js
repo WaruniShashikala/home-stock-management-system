@@ -32,7 +32,7 @@ exports.getAllListItems = async (req, res) => {
             return res.status(400).json({ error: 'User ID is required in headers' });
         }
 
-        const items = await List.find({ userId: userId });
+        const items = await List.find({ userId: userId }).sort({ createdAt: -1 });
         res.json(items);
     } catch (error) {
         res.status(500).json({ error: error.message });

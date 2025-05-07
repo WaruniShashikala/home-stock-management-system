@@ -217,6 +217,7 @@ const AddWastePopup = ({ visible, onCancel, onSave, initialValues, isView }) => 
             width={600}
             destroyOnClose
         >
+            <ToastContainer/>
             <Form form={form} layout="vertical">
                 <Form.Item
                     label={<Text strong>Item Name</Text>}

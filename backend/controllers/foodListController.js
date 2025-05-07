@@ -37,7 +37,7 @@ exports.getAllFoods =  async (req, res) => {
             return res.status(400).json({ error: 'User ID is required in headers' });
         }
 
-        const foods = await Food.find({ userId: userId });
+        const foods = await Food.find({ userId: userId }).sort({ createdAt: -1 });
         res.json(foods);
     } catch (error) {
         res.status(500).json({ error: error.message });

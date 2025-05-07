@@ -45,8 +45,8 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
         <ToastContainer />
+      <div className="App">
         {isAuthenticated && <VoiceControl />}
         <Routes>
           {/* Public routes */}

@@ -33,7 +33,7 @@ exports.getAllCategories = async (req, res) => {
             return res.status(400).json({ error: 'User ID is required in headers' });
         }
 
-        const categories = await Category.find({ userId: userId });
+        const categories = await Category.find({ userId: userId }).sort({ createdAt: -1 });
         res.json(categories);
     } catch (error) {
         res.status(500).json({ error: error.message });

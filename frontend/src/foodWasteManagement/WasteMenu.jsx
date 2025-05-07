@@ -65,9 +65,9 @@ const DashboardView = () => (
 );
 
 const menuItems = [
-  { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: Dashboard },
+  { key: '1', icon: <AppstoreOutlined />, label: 'Dashboard', component: report},
   { key: '2', icon: <PlusCircleOutlined />, label: 'Log Waste', component: wasteList },
-  { key: '3', icon: <BarChartOutlined />, label: 'Reports', component: report },
+  { key: '3', icon: <BarChartOutlined />, label: 'Reports', component: Dashboard },
   { key: '4', icon: <HeartOutlined />, label: 'Donations', component: Donation },
 ];
 
