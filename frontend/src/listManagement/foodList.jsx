@@ -232,6 +232,7 @@ const FoodList = () => {
 
     return (
         <div className="food-list-container">
+            <ToastContainer/>
             <div className="header">
                 <Title level={3} style={{ color: '#5e3ea1' }}>Items List</Title>
                 <Space>

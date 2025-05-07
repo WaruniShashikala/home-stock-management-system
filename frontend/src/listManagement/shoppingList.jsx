@@ -14,6 +14,7 @@ import './shoppingList.css';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { ToastContainer, toast } from 'react-toastify';
 
 const { Title } = Typography;
 
@@ -129,10 +130,28 @@ const ShoppingList = () => {
         if (!isConfirmed) return;
         try {
             await deleteListItem(record._id).unwrap();
-            message.success(`${record.itemName} deleted successfully!`);
+            toast.success(`${record.itemName} deleted successfully!`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
             refetch();
         } catch (err) {
-            message.error(`Failed to delete: ${err.message}`);
+            toast.error(`Failed to delete: ${err.message}`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
         }
     };
 
@@ -149,16 +168,45 @@ const ShoppingList = () => {
                     id: editingItem._id,
                     ...itemData
                 }).unwrap();
-                message.success(`${values.itemName} updated successfully!`);
+                toast.success(`${values.itemName} updated successfully!`,
+                    {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark"
+                    }
+                );
             } else {
                 await createListItem(itemData).unwrap();
-                message.success(`${values.itemName} added to your list!`);
+                toast.success(`${values.itemName} added to your list!`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark"
+                });
             }
             setIsModalVisible(false);
             form.resetFields();
             refetch();
         } catch (err) {
-            message.error(`Operation failed: ${err.message}`);
+            toast.error(`Operation failed: ${err.message}`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
         }
     };
 
@@ -211,6 +259,7 @@ const ShoppingList = () => {
 
     return (
         <div className="food-list-container shopping-list">
+            <ToastContainer />
             <div className="header shopping-header">
                 <Title level={3} style={{ color: '#5e3ea1' }}>Shopping List</Title>
                 <Space>

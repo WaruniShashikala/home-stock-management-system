@@ -294,6 +294,7 @@ const ProductList = () => {
 
     return (
         <div className="product-list-container">
+            <ToastContainer/>
             <div className="header">
                 <Title level={3} style={{ color: '#5e3ea1' }}>Product Inventory</Title>
                 <Space>

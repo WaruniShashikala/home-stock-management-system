@@ -183,6 +183,7 @@ const CategoryList = () => {
 
     return (
         <div className="category-list-container">
+            <ToastContainer />
             <div className="header">
                 <Title level={3} style={{ color: '#5e3ea1' }}>Category Management</Title>
                 <Space>
@@ -261,7 +262,6 @@ const CategoryList = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <ToastContainer />
         </div>
     );
 };

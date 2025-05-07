@@ -58,7 +58,7 @@ const WasteList = () => {
     try {
       await deleteWaste(id).unwrap();
       refetch();
-      toast.success('Record Delete Success!', {
+      toast.success('Record Deleted Successfully !', {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -67,7 +67,7 @@ const WasteList = () => {
         draggable: true,
         progress: undefined,
         theme: "dark"
-      });
+    });
     } catch (err) {
       toast.error('Record Delete Error!', {
         position: "top-right",
@@ -78,7 +78,7 @@ const WasteList = () => {
         draggable: true,
         progress: undefined,
         theme: "dark"
-      });
+    });
     }
   };
 
@@ -148,6 +148,7 @@ const WasteList = () => {
 
   return (
     <div style={{ padding: '24px' }}>
+      <ToastContainer/>
       <Space direction="vertical" style={{ width: '100%' }} size="large">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Title level={3}>Waste Records</Title>
